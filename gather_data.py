@@ -13,7 +13,7 @@ SED_FITTINGS = r"C:\Users\jsmes\OneDrive\Documents\Temp\Thesis\Data\CombinedData
 #header lists go here
 JM_header = ['JINGLEID','IDNUM','RA','DEC','z','z_ERR','Z_PP04_N2','Z_PP04_O3N2','Z_MZR','LOGMSTAR_MAGPHYS','LOGMSTAR_MAGPHYS_ERR','LOGSFR_MAGPHYS','LOGSFR_MAGPHYS_ERR','LOGMDUST_MAGPHYS','LOGMDUST_DELOOZE','-dex','+dex','LOGMH1','LOGMH1_FRAC','LOGMH2','LOGMH2_PRED','LOGMHALO','GROUP_TYPE']
 JT_header = ['IDNUM','GROUP_TYPE','IDGAL','NGAL','DGAL','MNFW','DEN1','FAMID','FAM_SIZE']
-SF_header = ['JINGLEID','logMc_SMBB','e_logMc_SMBB','Tc_SMBB','e_Tc_SMBB','logMc_BMBB','e_logMc_BMBB','Tc_BMBB','e_Tc_BMBB','logMc_TMBB','e_logMc_TMBB','Tc_TMBB','e_Tc_TMBB','logMw_TMBB','e_logMw_TMBB','Tw_TMBB','e_Tw_TMBB']
+SF_header = ['IDNUM','logMc_SMBB','e_logMc_SMBB','Tc_SMBB','e_Tc_SMBB','logMc_BMBB','e_logMc_BMBB','Tc_BMBB','e_Tc_BMBB','logMc_TMBB','e_logMc_TMBB','Tc_TMBB','e_Tc_TMBB','logMw_TMBB','e_logMw_TMBB','Tw_TMBB','e_Tw_TMBB']
 
 #functions go here
 def get_header(file):
@@ -42,7 +42,7 @@ def get_data(file):
         #extract the data from the csv
         data = pd.read_csv(file, sep=',', header=0, names=name)
         #print a summary of the key information within the dataset to confirm the selection
-        print(data.describe())
+        #print(data.describe())
     
     except Exception as e:
         #return the error causing the issue
