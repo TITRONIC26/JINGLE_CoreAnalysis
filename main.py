@@ -51,10 +51,27 @@ def gas_content_comparisons():
 
     BPLT.H1_vs_H2(src=df)
 
+def specific_SFR(Mstar = True, Mdust = True, Mh1 = True, Mh2 = True, Mgas = True):
+    df = src1[['JINGLEID','IDNUM','LOGSFR_MAGPHYS','LOGSFR_MAGPHYS_ERR','LOGMSTAR_MAGPHYS','LOGMSTAR_MAGPHYS_ERR','LOGMDUST_MAGPHYS','LOGMH1','LOGMH2','LOGMH2_PRED']].copy()
+    
+    if Mstar == True:
+        BPLT.SSFR(src=df, s=df['LOGMSTAR_MAGPHYS'])
+    if Mdust == True:
+        BPLT.SSFR(src=df, s=df['LOGMDUST_MAGPHYS'])
+    if Mh1 == True:
+        BPLT.SSFR(src=df, s=df['LOGMH1'])
+    if Mh2 == True:
+        BPLT.SSFR(src=df, s=df['LOGMH2'])
+    if Mgas == True:
+        gas = CA.Calc_Gas_Content_Total(src=df)
+        BPLT.SSFR(src=df, s=gas)
+
+
 
 #call on the main function when the script is executed
 if __name__ == '__main__':
     #main()
     #jingle_galaxy_base_parameters()
-    gas_content_comparisons()
+    #gas_content_comparisons()
+    specific_SFR()
 

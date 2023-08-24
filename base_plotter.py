@@ -142,4 +142,49 @@ def H1_vs_H2(src):
     ax.set_ylim(8.25, 10.25)
     plt.show()
     
+def SSFR(src, s):
+    if len(s) == 2:
+        s1 = s[1]
+        s = s[0]
+        column_name = str(['LOGMGAS'])
+    else:
+        dfs=s.to_frame()
+        column_name = str(dfs.columns.values)
+    
+    fig,ax = plt.subplots()
+
+    y = src['LOGSFR_MAGPHYS']-s
+    x_vals = src['LOGMSTAR_MAGPHYS'][y < -2]
+    y_vals = y[y < -2]
+
+    #SFR/s vs Mstar
+    ax.scatter(x_vals, y_vals, marker='*', s=C.SIZE*2, alpha=C.ALPHA, color='Purple', label=column_name)
+
+    if column_name == str(['LOGMH2']):
+        y1 = src['LOGSFR_MAGPHYS']-src['LOGMH2_PRED']
+        x1_vals = src['LOGMSTAR_MAGPHYS'][y1 < -2]
+        y1_vals = y1[y1 < -2]
+        
+        ax.scatter(x1_vals, y1_vals, marker='v', s=C.SIZE*2, alpha=C.ALPHA, color='Purple', label='Upper Limits')
+    
+    if column_name == str(['LOGMGAS']):
+        y1 = src['LOGSFR_MAGPHYS']-s1
+        x1_vals = src['LOGMSTAR_MAGPHYS'][y1 < -2]
+        y1_vals = y1[y1 < -2]
+
+        ax.scatter(x1_vals, y1_vals, marker='v', s=C.SIZE*2, alpha=C.ALPHA, color='Purple', label='Upper Limits')   
+    
+    #plot labels
+    ax.set_xlabel('$M_{star}$ [Log($M_{\odot}$)]')
+    ax.set_ylabel('${SFR}/'+column_name+'$ [Log(1/yr)]')
+    #formatting plot
+    box = ax.get_position()
+    ax.set_position([box.x0, box.y0, box.width * 0.8, box.height])
+    ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+    #set limits
+    #ax.set_xlim(8.5,10.5)
+    #ax.set_ylim(8.25, 10.25)
+    plt.show()
+    
+
 
