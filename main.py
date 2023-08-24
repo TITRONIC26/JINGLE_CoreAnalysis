@@ -23,7 +23,8 @@ src1.loc[src1['LOGMH2'] != 0, 'LOGMH2_PRED'] = 0
 
 #main function for analyzing data
 def main():
-    print("Hello and welcome to the plotting software, please select a function run.")
+    print("Hello and welcome to the plotting software!")
+    print("-------------------------------------------")
     return
 
 def jingle_galaxy_base_parameters(Dust = True, Gas = True, SFR = True):
@@ -70,8 +71,8 @@ def specific_SFR(Mstar = True, Mdust = True, Mh1 = True, Mh2 = True, Mgas = True
 
 #call on the main function when the script is executed
 if __name__ == '__main__':
-    #main()
-    #jingle_galaxy_base_parameters()
-    #gas_content_comparisons()
+    main()
+    jingle_galaxy_base_parameters()
+    gas_content_comparisons()
     specific_SFR()
 
