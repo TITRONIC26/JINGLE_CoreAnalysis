@@ -16,6 +16,7 @@ import math as mt
 import gather_data as GD
 import constants as C
 import core_analysis as CA
+import linmixer as LM
 
 #global variables here
 
@@ -186,5 +187,21 @@ def SSFR(src, s):
     #ax.set_ylim(8.25, 10.25)
     plt.show()
     
+def linmix_plots(src,x,y,x_err,y_err):
+    fig,ax = plt.subplots()
 
+    LM.pearson(x,y)
+    LM.curvefitting(x,y)
+    LM.linmixing(x,y,x_err,y_err)
 
+    ax.errorbar(x, y, y_err, x_err, fmt='o', color='Purple', ecolor='Black', markersize=C.SIZE/3, alpha=C.ALPHA)
+
+    #plot labels
+    ax.set_xlabel('$M_{star}$ [Log($M_{\odot}$)]')
+    ax.set_ylabel('${SFR}$ [Log($M_{\odot}$/yr)]')
+    #formatting plot
+    box = ax.get_position()
+    ax.set_position([box.x0, box.y0, box.width * 0.8, box.height])
+    ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+    
+    plt.show()

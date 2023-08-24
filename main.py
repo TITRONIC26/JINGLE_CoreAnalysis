@@ -67,12 +67,17 @@ def specific_SFR(Mstar = True, Mdust = True, Mh1 = True, Mh2 = True, Mgas = True
         gas = CA.Calc_Gas_Content_Total(src=df)
         BPLT.SSFR(src=df, s=gas)
 
+def linmix_datasets():
+    df = src1[['JINGLEID','IDNUM','LOGSFR_MAGPHYS','LOGSFR_MAGPHYS_ERR','LOGMSTAR_MAGPHYS','LOGMSTAR_MAGPHYS_ERR']].copy()
+
+    BPLT.linmix_plots(df, df['LOGMSTAR_MAGPHYS'], df['LOGSFR_MAGPHYS'], df['LOGMSTAR_MAGPHYS_ERR'], df['LOGSFR_MAGPHYS_ERR'])
+
 
 
 #call on the main function when the script is executed
 if __name__ == '__main__':
-    main()
-    jingle_galaxy_base_parameters()
-    gas_content_comparisons()
-    specific_SFR()
-
+    #main()
+    #jingle_galaxy_base_parameters()
+    #gas_content_comparisons()
+    #specific_SFR()
+    linmix_datasets()
