@@ -188,6 +188,11 @@ def SSFR(src, s):
     plt.show()
     
 def linmix_plots(src,x,y,x_err,y_err):
+    dfx=x.to_frame()
+    x_name = str(dfx.columns.values)
+    dfy=y.to_frame()
+    y_name = str(dfy.columns.values)
+    
     fig,ax = plt.subplots()
 
     LM.pearson(x,y)
@@ -197,11 +202,13 @@ def linmix_plots(src,x,y,x_err,y_err):
     ax.errorbar(x, y, y_err, x_err, fmt='o', color='Purple', ecolor='Black', markersize=C.SIZE/3, alpha=C.ALPHA)
 
     #plot labels
-    ax.set_xlabel('$M_{star}$ [Log($M_{\odot}$)]')
-    ax.set_ylabel('${SFR}$ [Log($M_{\odot}$/yr)]')
+    ax.set_xlabel(x_name)
+    ax.set_ylabel(y_name)
     #formatting plot
     box = ax.get_position()
     ax.set_position([box.x0, box.y0, box.width * 0.8, box.height])
     ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+    #set limits
+    ax.set_xlim(x.min()-0.25,x.max()+0.25)
     
     plt.show()
