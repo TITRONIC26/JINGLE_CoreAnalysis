@@ -49,6 +49,8 @@ def gas_content_comparisons():
 
     BPLT.Gas_Content(src=df)
 
+    BPLT.H1_vs_H2(src=df)
+
 
 #call on the main function when the script is executed
 if __name__ == '__main__':

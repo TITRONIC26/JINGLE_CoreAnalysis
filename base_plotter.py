@@ -122,3 +122,24 @@ def Gas_Content(src):
     ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
     ax.set_ylim(7.75, 10.75)
     plt.show()
+
+def H1_vs_H2(src):
+    fig,ax = plt.subplots()
+
+    #MH1 vs MH2
+    ax.scatter(src['LOGMH1'], src['LOGMH2'], marker='*', s=C.SIZE*2, alpha=C.ALPHA, color='Purple', label='Ryan, 2020')
+    ax.scatter(src['LOGMH1'], src['LOGMH2_PRED'], marker='v', s=C.SIZE*2, alpha=C.ALPHA, color='Purple', label='Upper Limits')
+    #plot labels
+    ax.set_title(r'$H_{\alpha}$ vs $H_{2}$')
+    ax.set_xlabel(r'$M_{H_{\alpha}}$ [Log($M_{\odot}$)]')
+    ax.set_ylabel('$M_{H_{2}}$ [Log($M_{\odot}$)]')
+    #formatting plot
+    box = ax.get_position()
+    ax.set_position([box.x0, box.y0, box.width * 0.8, box.height])
+    ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+    #set limits
+    ax.set_xlim(8.5,10.5)
+    ax.set_ylim(8.25, 10.25)
+    plt.show()
+    
+
