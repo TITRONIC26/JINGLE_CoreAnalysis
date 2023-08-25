@@ -9,15 +9,24 @@ import numpy as np
 import matplotlib as mpl
 import scipy as sci
 import math as mt
+import warnings
+
+from pandas.errors import SettingWithCopyWarning
 
 #import other scripts here
 import gather_data as GD
 import base_plotter as BPLT
 import core_analysis as CA
+import formatting_functions as FF
 
 #set-up parameters and globals here
 src1 = GD.get_data(GD.JINGLE_MASTER)
 src2 = GD.get_data(GD.SED_FITTINGS)
+src3 = GD.get_data(GD.JINGLE_TEMPEL)
+
+#ignore pandas warning
+warnings.simplefilter(action="ignore", category=SettingWithCopyWarning)
+
 #fixing upper limit duplicates
 src1.loc[src1['LOGMH2'] != 0, 'LOGMH2_PRED'] = 0
 
@@ -72,6 +81,16 @@ def linmix_datasets():
 
     BPLT.linmix_plots(df, df['LOGMSTAR_MAGPHYS'], df['LOGSFR_MAGPHYS'], df['LOGMSTAR_MAGPHYS_ERR'], df['LOGSFR_MAGPHYS_ERR'])
 
+def grouped_by_density():
+    df1 = src1[['JINGLEID','IDNUM','LOGMHALO']].copy()
+    df3 = src3[['IDNUM','IDGAL','NGAL']].copy()
+
+    df = pd.merge(df1, df3, on='IDNUM')
+
+    df = CA.Group_By_Density(df)
+
+    FF.print_full(df)
+
 
 
 #call on the main function when the script is executed
@@ -80,4 +99,5 @@ if __name__ == '__main__':
     #jingle_galaxy_base_parameters()
     #gas_content_comparisons()
     #specific_SFR()
-    linmix_datasets()
+    #linmix_datasets()
+    grouped_by_density()
