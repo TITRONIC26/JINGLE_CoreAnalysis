@@ -30,6 +30,16 @@ warnings.simplefilter(action="ignore", category=SettingWithCopyWarning)
 #fixing upper limit duplicates
 src1.loc[src1['LOGMH2'] != 0, 'LOGMH2_PRED'] = 0
 
+#generate average errors for DeLooze Dust Masses
+src1['LOGMDUST_DELOOZE_ERR'] = [(abs(g)+abs(h))/2 for g,h in zip(src1['-dex'], src1['+dex'])]
+src1['LOGMH2_ALL'] = src1['LOGMH2'] + src1['LOGMH2_PRED']
+
+src1 = CA.generate_std_error(src1, src1['LOGMH1'])
+src1 = CA.generate_std_error(src1, src1['LOGMH2_ALL'])
+
+src1.loc[src1['LOGMH1'] <= 0.5, 'LOGMH1'] = np.nan
+src1.loc[src1['LOGMH2_ALL'] <= 0.5, 'LOGMH2_ALL'] = np.nan
+
 #main function for analyzing data
 def main():
     print("Hello and welcome to the plotting software!")
@@ -76,21 +86,30 @@ def specific_SFR(Mstar = True, Mdust = True, Mh1 = True, Mh2 = True, Mgas = True
         gas = CA.Calc_Gas_Content_Total(src=df)
         BPLT.SSFR(src=df, s=gas)
 
-def linmix_datasets():
-    df = src1[['JINGLEID','IDNUM','LOGSFR_MAGPHYS','LOGSFR_MAGPHYS_ERR','LOGMSTAR_MAGPHYS','LOGMSTAR_MAGPHYS_ERR']].copy()
-
-    BPLT.linmix_plots(df, df['LOGMSTAR_MAGPHYS'], df['LOGSFR_MAGPHYS'], df['LOGMSTAR_MAGPHYS_ERR'], df['LOGSFR_MAGPHYS_ERR'])
-
-def grouped_by_density():
-    df1 = src1[['JINGLEID','IDNUM','LOGMHALO']].copy()
+def grouped_by(Env = False, Den = False):
+    df1 = src1.copy()
     df3 = src3[['IDNUM','IDGAL','NGAL']].copy()
 
     df = pd.merge(df1, df3, on='IDNUM')
 
-    df = CA.Group_By_Density(df)
+    df = CA.Group_By_Env(df)
+    df = CA.Group_By_Dens(df)
 
-    FF.print_full(df)
+    if Env == True and Den == False:
+        grouper = df.groupby('GALACTIC_ENV')
+    elif Env == False and Den == True:
+        grouper = df.groupby('GALACTIC_DENS')
+    else:
+        grouper = df.groupby('GALACTIC_DENS')
 
+    #FF.print_full(df)
+
+    for key, group in grouper:
+        #BPLT.linmix_plots(key, group, group['LOGMSTAR_MAGPHYS'], group['LOGSFR_MAGPHYS'], group['LOGMSTAR_MAGPHYS_ERR'], group['LOGSFR_MAGPHYS_ERR'])
+        #BPLT.linmix_plots(key, group, group['LOGMSTAR_MAGPHYS'], group['LOGMDUST_DELOOZE'], group['LOGMSTAR_MAGPHYS_ERR'], group['LOGMDUST_DELOOZE_ERR'])
+        BPLT.linmix_plots(key, group, group['LOGMSTAR_MAGPHYS'], group['LOGMH1'], group['LOGMSTAR_MAGPHYS_ERR'], group['LOGMH1_ERR'])
+        BPLT.linmix_plots(key, group, group['LOGMSTAR_MAGPHYS'], group['LOGMH2_ALL'], group['LOGMSTAR_MAGPHYS_ERR'], group['LOGMH2_ALL_ERR'])
+    
 
 
 #call on the main function when the script is executed
@@ -99,5 +118,4 @@ if __name__ == '__main__':
     #jingle_galaxy_base_parameters()
     #gas_content_comparisons()
     #specific_SFR()
-    #linmix_datasets()
-    grouped_by_density()
+    grouped_by(Env=False)

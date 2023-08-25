@@ -187,13 +187,31 @@ def SSFR(src, s):
     #ax.set_ylim(8.25, 10.25)
     plt.show()
     
-def linmix_plots(src,x,y,x_err,y_err):
+def clean_set(x, y, x_err, y_err):
+    dfx = x.to_frame()
+    dfy = y.to_frame()
+    dfx_err = x_err.to_frame()
+    dfy_err = y_err.to_frame()
+
+    name1 = str(dfx.columns.values)
+    name2 = str(dfy.columns.values)
+    name3 = str(dfx_err.columns.values)
+    name4 = str(dfy_err.columns.values)
+
+    df = pd.DataFrame({name1: x, name2: y, name3: x_err, name4: y_err})
+    df = df.dropna()
+
+    return (df[name1], df[name2], df[name3], df[name4])
+
+def linmix_plots(key,src,x,y,x_err,y_err):
     dfx=x.to_frame()
     x_name = str(dfx.columns.values)
     dfy=y.to_frame()
     y_name = str(dfy.columns.values)
     
     fig,ax = plt.subplots()
+
+    (x,y,x_err,y_err) = clean_set(x,y,x_err,y_err)
 
     LM.pearson(x,y)
     LM.curvefitting(x,y)
@@ -204,6 +222,7 @@ def linmix_plots(src,x,y,x_err,y_err):
     #plot labels
     ax.set_xlabel(x_name)
     ax.set_ylabel(y_name)
+    ax.set_title(key)
     #formatting plot
     box = ax.get_position()
     ax.set_position([box.x0, box.y0, box.width * 0.8, box.height])
