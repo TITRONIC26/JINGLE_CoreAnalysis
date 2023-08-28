@@ -203,19 +203,17 @@ def clean_set(x, y, x_err, y_err):
 
     return (df[name1], df[name2], df[name3], df[name4])
 
-def linmix_plots(key,src,x,y,x_err,y_err):
+def linmix_plots(key,src,x,y,x_err,y_err, ax=plt):
     dfx=x.to_frame()
     x_name = str(dfx.columns.values)
     dfy=y.to_frame()
     y_name = str(dfy.columns.values)
-    
-    fig,ax = plt.subplots()
 
     (x,y,x_err,y_err) = clean_set(x,y,x_err,y_err)
 
-    LM.pearson(x,y)
-    LM.curvefitting(x,y)
-    LM.linmixing(x,y,x_err,y_err)
+    LM.pearson(x,y, ax)
+    LM.curvefitting(x,y, ax)
+    LM.linmixing(x,y,x_err,y_err, ax)
 
     ax.errorbar(x, y, y_err, x_err, fmt='o', color='Purple', ecolor='Black', markersize=C.SIZE/3, alpha=C.ALPHA)
 
@@ -227,7 +225,25 @@ def linmix_plots(key,src,x,y,x_err,y_err):
     box = ax.get_position()
     ax.set_position([box.x0, box.y0, box.width * 0.8, box.height])
     ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
-    #set limits
-    ax.set_xlim(x.min()-0.25,x.max()+0.25)
-    
-    plt.show()
+
+def linmix_plots_multi(key,src,x,y,x_err,y_err,ax=plt,color='Purple',LMcolor='Red'):
+    dfx=x.to_frame()
+    x_name = str(dfx.columns.values)
+    dfy=y.to_frame()
+    y_name = str(dfy.columns.values)
+
+    (x,y,x_err,y_err) = clean_set(x,y,x_err,y_err)
+
+    LM.pearson(x,y,ax)
+    LM.curvefitting(x,y,ax,color=LMcolor)
+    LM.linmixing(x,y,x_err,y_err,ax,color=LMcolor)
+
+    ax.errorbar(x, y, y_err, x_err, fmt='o', color=color, ecolor='Black', markersize=C.SIZE/3, alpha=C.ALPHA, label=key)
+
+    #plot labels
+    ax.set_xlabel(x_name)
+    ax.set_ylabel(y_name)
+    #formatting plot
+    box = ax.get_position()
+    ax.set_position([box.x0, box.y0, box.width * 0.8, box.height])
+    ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))

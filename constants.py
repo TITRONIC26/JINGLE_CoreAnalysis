@@ -14,3 +14,6 @@ NGAL_HIGH = 100
 
 #metal scaling relations
 F_Z0 = 0.0134
+
+#color codes
+COLORS = ['Purple', 'Blue', 'Green', 'Yellow', 'Orange', 'Red', 'Pink']

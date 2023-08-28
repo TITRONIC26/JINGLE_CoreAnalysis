@@ -1,12 +1,13 @@
 """
 Main function. Run this code to access the data from the local JINGLE csv files.
-This code is meant to give a "quick" look at the data within the JINGLE files, showing brief a brief overlook at the main information.
+This code is meant to give a "quick" look at the data within the JINGLE files, showing a brief overlook at the main information.
 """
 
 #import libraries here
 import pandas as pd
 import numpy as np
 import matplotlib as mpl
+import matplotlib.pyplot as plt
 import scipy as sci
 import math as mt
 import warnings
@@ -19,6 +20,7 @@ import base_plotter as BPLT
 import core_analysis as CA
 import formatting_functions as FF
 import ratio_plots as RPLT
+import constants as C
 
 #set-up parameters and globals here
 src1 = GD.get_data(GD.JINGLE_MASTER)
@@ -108,19 +110,29 @@ def grouped_by(Env = False, Den = False):
 
     #FF.print_full(df)
 
+    #for key, group in grouper:
+        #fig,ax = plt.subplots()
+        #BPLT.linmix_plots(key, group, group['LOGMSTAR_MAGPHYS'], group['LOGSFR_MAGPHYS'], group['LOGMSTAR_MAGPHYS_ERR'], group['LOGSFR_MAGPHYS_ERR'], ax=ax)
+        #BPLT.linmix_plots(key, group, group['LOGMSTAR_MAGPHYS'], group['LOGMDUST_DELOOZE'], group['LOGMSTAR_MAGPHYS_ERR'], group['LOGMDUST_DELOOZE_ERR'], ax=ax)
+        #BPLT.linmix_plots(key, group, group['LOGMSTAR_MAGPHYS'], group['LOGMH1'], group['LOGMSTAR_MAGPHYS_ERR'], group['LOGMH1_ERR'], ax=ax)
+        #BPLT.linmix_plots(key, group, group['LOGMSTAR_MAGPHYS'], group['LOGMH2_ALL'], group['LOGMSTAR_MAGPHYS_ERR'], group['LOGMH2_ALL_ERR'], ax=ax)
+        #plt.show()
+
+    counter = 0
+    fig,ax = plt.subplots()
+
     for key, group in grouper:
-        BPLT.linmix_plots(key, group, group['LOGMSTAR_MAGPHYS'], group['LOGSFR_MAGPHYS'], group['LOGMSTAR_MAGPHYS_ERR'], group['LOGSFR_MAGPHYS_ERR'])
-        BPLT.linmix_plots(key, group, group['LOGMSTAR_MAGPHYS'], group['LOGMDUST_DELOOZE'], group['LOGMSTAR_MAGPHYS_ERR'], group['LOGMDUST_DELOOZE_ERR'])
-        BPLT.linmix_plots(key, group, group['LOGMSTAR_MAGPHYS'], group['LOGMH1'], group['LOGMSTAR_MAGPHYS_ERR'], group['LOGMH1_ERR'])
-        BPLT.linmix_plots(key, group, group['LOGMSTAR_MAGPHYS'], group['LOGMH2_ALL'], group['LOGMSTAR_MAGPHYS_ERR'], group['LOGMH2_ALL_ERR'])
+        BPLT.linmix_plots_multi(key, group, group['LOGMSTAR_MAGPHYS'], group['LOGMDUST_DELOOZE'], group['LOGMSTAR_MAGPHYS_ERR'], group['LOGMDUST_DELOOZE_ERR'], ax=ax, color=C.COLORS[counter], LMcolor=C.COLORS[counter])
+        counter+=1
+    
+    plt.show()
+    
     
 def galaxy_ratios():
     df1 = src1.copy()
 
-    RPLT.x_Mstar(df1)
-
-
-
+    #RPLT.x_Mstar(df1, df1['LOGMSTAR_MAGPHYS'], df1['LOGMSTAR_MAGPHYS_ERR'], '$M_{star}$ [Log($M_{\odot}$)]')
+    RPLT.x_Mstar(df1, df1['LOGSFR_MAGPHYS'], df1['LOGSFR_MAGPHYS_ERR'], '$SFR$ [Log($M_{\odot}$/yr)]')
 
 #call on the main function when the script is executed
 if __name__ == '__main__':
@@ -128,5 +140,5 @@ if __name__ == '__main__':
     #jingle_galaxy_base_parameters()
     #gas_content_comparisons()
     #specific_SFR()
-    #grouped_by(Env=False)
-    galaxy_ratios()
+    grouped_by(Env=False)
+    #galaxy_ratios()
