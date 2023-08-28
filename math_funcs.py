@@ -14,8 +14,13 @@ import constants as C
 import formatting_functions as FF
 
 #define functions here
+def addErrors(a,b):
+    z = np.sqrt(np.float_power(a,2) + np.float_power(b,2))
+
+    return z
+
 def error_add(A, a, B, b):
     Z = A + B
-    z = np.sqrt(np.float_power(a,2) + np.float_power(b,2))
+    z = addErrors(a,b)
 
     return (Z,z)

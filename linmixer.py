@@ -20,7 +20,7 @@ import constants as C
 #global variable here
 
 #define functions here
-def linmixing(x, y, x_err, y_err, axs=plt):
+def linmixing(x, y, x_err, y_err, axs=plt, color='Red'):
     lm = linmix.LinMix(x, y, x_err, y_err, K=2, seed=2)
     lm.run_mcmc(silent=True)
 
@@ -33,7 +33,7 @@ def linmixing(x, y, x_err, y_err, axs=plt):
         y_high.append(ys.max())
         y_low.append(ys.min())
     
-    axs.fill_between(xs, y_high, y_low, color='Red', alpha=0.2)
+    axs.fill_between(xs, y_high, y_low, color=color, alpha=0.2)
 
 def func(x,m,b):
     return m*x+b
