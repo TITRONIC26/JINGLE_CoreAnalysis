@@ -122,7 +122,7 @@ def grouped_by(Env = False, Den = False):
     fig,ax = plt.subplots()
 
     for key, group in grouper:
-        BPLT.linmix_plots_multi(key, group, group['LOGMSTAR_MAGPHYS'], group['LOGMDUST_DELOOZE'], group['LOGMSTAR_MAGPHYS_ERR'], group['LOGMDUST_DELOOZE_ERR'], ax=ax, color=C.COLORS[counter], LMcolor=C.COLORS[counter])
+        BPLT.linmix_plots_multi(key, group, group['LOGMSTAR_MAGPHYS'], group['LOGMMETAL'], group['LOGMSTAR_MAGPHYS_ERR'], group['LOGMMETAL_ERR'], ax=ax, color=C.COLORS[counter], LMcolor=C.COLORS[counter])
         counter+=1
     
     plt.show()
