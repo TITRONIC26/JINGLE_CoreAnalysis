@@ -12,6 +12,7 @@ import math as mt
 #import scripts here
 import constants as C
 import formatting_functions as FF
+import math_funcs as MF
 
 #global variables here
 
@@ -92,5 +93,27 @@ def generate_std_error(src, column):
 
     src[name+str('_ERR')] = pd.DataFrame(np.zeros(len(src[name])))
     src[name+str('_ERR')] = src[name+str('_ERR')].mask(src[name+str('_ERR')] == 0, sterr)
+
+    return src
+
+def find_Mgas(src):
+    vals = MF.error_add(src['LOGMH1'], src['LOGMH1_ERR'], src['LOGMH2_ALL'], src['LOGMH2_ALL_ERR'])
+    src['LOGMGAS'] = vals[0]
+    src['LOGMGAS_ERR'] = vals[1]
+
+    return src
+
+def find_Mmetals(src):
+    fz0 = C.F_Z0
+    oxygen = C.REF_METALICITY
+
+    fz = 27.36*np.float_power(10, (src['Z_PP04_O3N2'] - 12))
+
+    src = find_Mgas(src)
+
+    src['LOGMMETAL'] = fz * (src['LOGMGAS']+src['LOGMDUST_DELOOZE'])
+    src.loc[src['LOGMMETAL'] <= 0.01, 'LOGMMETAL'] = np.nan
+
+    src['LOGMMETAL_ERR'] = fz * MF.error_add(src['LOGMGAS'], src['LOGMGAS_ERR'], src['LOGMDUST_DELOOZE'], src['LOGMDUST_DELOOZE_ERR'])[1]
 
     return src

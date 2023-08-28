@@ -11,3 +11,6 @@ HALOMASS_LOW = 13
 HALOMASS_HIGH = 14
 NGAL_LOW = 10
 NGAL_HIGH = 100
+
+#metal scaling relations
+F_Z0 = 0.0134
