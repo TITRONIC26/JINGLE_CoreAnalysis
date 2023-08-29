@@ -53,4 +53,4 @@ def pearson(x,y, axs=plt):
     results = stats.pearsonr(x,y)
     p_val = str("{0:.1g}".format(results[1]))
 
-    axs.scatter(x.mean(), y.mean(), color='White', label='p-value = '+p_val)
+    axs.scatter(x.mean(), y.mean(), color='White', s=1, label='p-value = '+p_val)

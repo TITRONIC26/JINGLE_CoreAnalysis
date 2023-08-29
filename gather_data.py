@@ -9,11 +9,13 @@ import pandas as pd
 JINGLE_MASTER = r"C:\Users\jsmes\OneDrive\Documents\Temp\Thesis\Data\CombinedDatasets\JINGLE_MASTER.csv"
 JINGLE_TEMPEL = r"C:\Users\jsmes\OneDrive\Documents\Temp\Thesis\Data\CombinedDatasets\JINGLE_TEMPEL_FULL.csv"
 SED_FITTINGS = r"C:\Users\jsmes\OneDrive\Documents\Temp\Thesis\Data\CombinedDatasets\SED_FITTINGS.csv"
+XCOLDGASS = r"C:\Users\jsmes\OneDrive\Documents\Temp\Thesis\Data\xCOLDGASS\xCOLDGASS_Near.csv"
 
 #header lists go here
 JM_header = ['JINGLEID','IDNUM','RA','DEC','z','z_ERR','Z_PP04_N2','Z_PP04_O3N2','Z_MZR','LOGMSTAR_MAGPHYS','LOGMSTAR_MAGPHYS_ERR','LOGSFR_MAGPHYS','LOGSFR_MAGPHYS_ERR','LOGMDUST_MAGPHYS','LOGMDUST_DELOOZE','-dex','+dex','LOGMH1','LOGMH1_FRAC','LOGMH2','LOGMH2_PRED','LOGMHALO','GROUP_TYPE']
 JT_header = ['IDNUM','GROUP_TYPE','IDGAL','NGAL','DGAL','MNFW','DEN1','FAMID','FAM_SIZE']
 SF_header = ['IDNUM','logMc_SMBB','e_logMc_SMBB','Tc_SMBB','e_Tc_SMBB','logMc_BMBB','e_logMc_BMBB','Tc_BMBB','e_Tc_BMBB','logMc_TMBB','e_logMc_TMBB','Tc_TMBB','e_Tc_TMBB','logMw_TMBB','e_logMw_TMBB','Tw_TMBB','e_Tw_TMBB']
+XCG_header = ['IDNUM','RA','DEC','z','LOGMSTAR','LOGSFR_BEST','LOGSFR_BEST_ERR','Z_PP04_N2','Z_PP04_O3N2','Z_MZR','LOGMH2','LOGMH2_ERR','LOGMH2_PRED']
 
 #functions go here
 def get_header(file):
@@ -26,6 +28,8 @@ def get_header(file):
         header = JT_header
     elif file == SED_FITTINGS:
         header = SF_header
+    elif file == XCOLDGASS:
+        header = XCG_header
     else:
         print("Invalid selection")
         header = []

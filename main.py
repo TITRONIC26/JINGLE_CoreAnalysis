@@ -21,30 +21,20 @@ import core_analysis as CA
 import formatting_functions as FF
 import ratio_plots as RPLT
 import constants as C
+import data_manipulation as DM
 
 #set-up parameters and globals here
 src1 = GD.get_data(GD.JINGLE_MASTER)
 src2 = GD.get_data(GD.SED_FITTINGS)
 src3 = GD.get_data(GD.JINGLE_TEMPEL)
+src4 = GD.get_data(GD.XCOLDGASS)
 
 #ignore pandas warning
 warnings.simplefilter(action="ignore", category=SettingWithCopyWarning)
 
-#fixing upper limit duplicates
-src1.loc[src1['LOGMH2'] != 0, 'LOGMH2_PRED'] = 0
-
-#generate average errors for DeLooze Dust Masses
-src1['LOGMDUST_DELOOZE_ERR'] = [(abs(g)+abs(h))/2 for g,h in zip(src1['-dex'], src1['+dex'])]
-src1['LOGMH2_ALL'] = src1['LOGMH2'] + src1['LOGMH2_PRED']
-
-src1 = CA.generate_std_error(src1, src1['LOGMH1'])
-src1 = CA.generate_std_error(src1, src1['LOGMH2_ALL'])
-
-src1.loc[src1['LOGMH1'] <= 0.5, 'LOGMH1'] = np.nan
-src1.loc[src1['LOGMH2_ALL'] <= 0.5, 'LOGMH2_ALL'] = np.nan
-
-#generate the total gas masses and metals
-src1 = CA.find_Mmetals(src1)
+#fix src1 data
+src1 = DM.JINGLE_main(src1)
+src4 = DM.XCOLDGASS_main(src4)
 
 #main function for analyzing data
 def main():
@@ -127,12 +117,24 @@ def grouped_by(Env = False, Den = False):
     
     plt.show()
     
-    
 def galaxy_ratios():
     df1 = src1.copy()
 
     #RPLT.x_Mstar(df1, df1['LOGMSTAR_MAGPHYS'], df1['LOGMSTAR_MAGPHYS_ERR'], '$M_{star}$ [Log($M_{\odot}$)]')
     RPLT.x_Mstar(df1, df1['LOGSFR_MAGPHYS'], df1['LOGSFR_MAGPHYS_ERR'], '$SFR$ [Log($M_{\odot}$/yr)]')
+
+def compare():
+    df1 = src1.copy()
+    df2 = src4.copy()
+
+    fig,ax = plt.subplots()
+
+    #compare Mstar vs SFR
+    BPLT.linmix_plots_multi('xCOLDGASS', df2, df2['LOGMSTAR'], df2['LOGMH2_ALL'], df2['LOGMSTAR_ERR'], df2['LOGMH2_ALL_ERR'], ax=ax, color=C.COLORS[1], LMcolor=C.COLORS[1])
+    BPLT.linmix_plots_multi('JINGLE', df1, df1['LOGMSTAR_MAGPHYS'], df1['LOGMH2_ALL'], df1['LOGMSTAR_MAGPHYS_ERR'], df1['LOGMH2_ALL_ERR'], ax=ax, color=C.COLORS[0], LMcolor=C.COLORS[0])
+
+    plt.show()
+    
 
 #call on the main function when the script is executed
 if __name__ == '__main__':
@@ -140,5 +142,6 @@ if __name__ == '__main__':
     #jingle_galaxy_base_parameters()
     #gas_content_comparisons()
     #specific_SFR()
-    grouped_by(Env=False)
+    #grouped_by(Env=False)
     #galaxy_ratios()
+    compare()
