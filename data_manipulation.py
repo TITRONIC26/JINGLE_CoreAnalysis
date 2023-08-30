@@ -55,15 +55,14 @@ def XCOLDGASS_main(src):
     return src
 
 def VERTICO_main(src):
-    #convert the non log base dustpedia molecular gas masses to log base for comparing to Brown.
-    src['LOGMH2_DP'] = np.log10(src['MH2_DP'])
-    src['LOGMH2_DP_ERR'] = np.log10(src['MH2_DP_ERR'])
+    #convert the non log base dustpedia masses to log base for comparing to Brown.
+    src['LOGMSTAR_DP_ERR'] = (1/np.log(10)) * (src['LOGMSTAR_DP_ERR'] / src['LOGMSTAR_DP'])
+    src['LOGMSTAR_DP'] = np.log10(src['LOGMSTAR_DP'])
 
-    src.loc[src['LOGMH1_DP'] <= 0.001, 'LOGMH1_DP'] = np.nan
-    src.loc[src['LOGMH1_DP_ERR'] <= 0.001, 'LOGMH1_DP_ERR'] = np.nan
-    src.loc[src['LOGMH2_DP'] <= 0.001, 'LOGMH2_DP'] = np.nan
-    src.loc[src['LOGMH2_DP_ERR'] <= 0.001, 'LOGMH2_DP_ERR'] = np.nan
+    src['LOGSFR_DP_ERR'] = (1/np.log(10)) * (src['LOGSFR_DP_ERR'] / src['LOGSFR_DP'])
+    src['LOGSFR_DP'] = np.log10(src['LOGSFR_DP'])
 
-    src = src.drop(['MH2_DP','MH2_DP_ERR'], axis=1)
+    src['LOGMDUST_DP_ERR'] = (1/np.log(10)) * (src['LOGMDUST_DP_ERR'] / src['LOGMDUST_DP'])
+    src['LOGMDUST_DP'] = np.log10(src['LOGMDUST_DP'])
 
     return src
