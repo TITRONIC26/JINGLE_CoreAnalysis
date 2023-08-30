@@ -5,20 +5,12 @@ This script is not intended to perform explicit plotting, calculations, or other
 
 #import libraries here
 import pandas as pd
-import numpy as np
-import matplotlib as mpl
 import matplotlib.pyplot as plt
-import scipy as sci
-import math as mt
-import warnings
-
-from pandas.errors import SettingWithCopyWarning
 
 #import other scripts here
 import gather_data as GD
 import base_plotter as BPLT
 import core_analysis as CA
-import formatting_functions as FF
 import ratio_plots as RPLT
 import constants as C
 import data_manipulation as DM
@@ -28,10 +20,12 @@ src1 = GD.get_data(GD.JINGLE_MASTER)
 src2 = GD.get_data(GD.SED_FITTINGS)
 src3 = GD.get_data(GD.JINGLE_TEMPEL)
 src4 = GD.get_data(GD.XCOLDGASS)
+src5 = GD.get_data(GD.VERTICO)
 
 #fix src1 data
 src1 = DM.JINGLE_main(src1)
 src4 = DM.XCOLDGASS_main(src4)
+src5 = DM.VERTICO_main(src5)
 
 def jingle_galaxy_base_parameters(Dust = True, Gas = True, SFR = True):
     if Dust == True:
@@ -111,7 +105,7 @@ def grouped_by(Env = False, Den = False):
 def galaxy_ratios():
     df1 = src1.copy()
 
-    #RPLT.x_Mstar(df1, df1['LOGMSTAR_MAGPHYS'], df1['LOGMSTAR_MAGPHYS_ERR'], '$M_{star}$ [Log($M_{\odot}$)]')
+    RPLT.x_Mstar(df1, df1['LOGMSTAR_MAGPHYS'], df1['LOGMSTAR_MAGPHYS_ERR'], '$M_{star}$ [Log($M_{\odot}$)]')
     RPLT.x_Mstar(df1, df1['LOGSFR_MAGPHYS'], df1['LOGSFR_MAGPHYS_ERR'], '$SFR$ [Log($M_{\odot}$/yr)]')
 
 def compare():

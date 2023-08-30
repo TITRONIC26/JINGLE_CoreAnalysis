@@ -53,3 +53,17 @@ def XCOLDGASS_main(src):
     src.loc[src['LOGMH2_ERR'] > 0.01, 'LOGMH2_ALL_ERR'] = src['LOGMH2_ERR']
 
     return src
+
+def VERTICO_main(src):
+    #convert the non log base dustpedia molecular gas masses to log base for comparing to Brown.
+    src['LOGMH2_DP'] = np.log10(src['MH2_DP'])
+    src['LOGMH2_DP_ERR'] = np.log10(src['MH2_DP_ERR'])
+
+    src.loc[src['LOGMH1_DP'] <= 0.001, 'LOGMH1_DP'] = np.nan
+    src.loc[src['LOGMH1_DP_ERR'] <= 0.001, 'LOGMH1_DP_ERR'] = np.nan
+    src.loc[src['LOGMH2_DP'] <= 0.001, 'LOGMH2_DP'] = np.nan
+    src.loc[src['LOGMH2_DP_ERR'] <= 0.001, 'LOGMH2_DP_ERR'] = np.nan
+
+    src = src.drop(['MH2_DP','MH2_DP_ERR'], axis=1)
+
+    return src

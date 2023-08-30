@@ -4,25 +4,24 @@ This code is meant to give a "quick" look at the data within the JINGLE files, s
 """
 
 #import libraries here
-import pandas as pd
-import numpy as np
-import matplotlib as mpl
-import matplotlib.pyplot as plt
-import scipy as sci
-import math as mt
 import warnings
-
 from pandas.errors import SettingWithCopyWarning
 
-#import other scripts here
-import gather_data as GD
+#plotting scripts
 import base_plotter as BPLT
-import core_analysis as CA
-import formatting_functions as FF
 import ratio_plots as RPLT
-import constants as C
-import data_manipulation as DM
+
+#essential scripts
+import gather_data as GD
 import callable_functions as CF
+import constants as C
+
+#data analysis and manipulation
+import core_analysis as CA
+import data_manipulation as DM
+
+#formatting
+import formatting_functions as FF
 
 #ignore pandas warning
 warnings.simplefilter(action="ignore", category=SettingWithCopyWarning)
@@ -40,5 +39,7 @@ if __name__ == '__main__':
     #CF.gas_content_comparisons()
     #CF.specific_SFR()
     #CF.grouped_by(Env=False)
-    #CF.galaxy_ratios()
-    CF.compare()
+    CF.galaxy_ratios()
+    #CF.compare()
+
+    #FF.print_full(CF.src5)

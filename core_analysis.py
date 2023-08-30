@@ -111,9 +111,9 @@ def find_Mmetals(src):
 
     src = find_Mgas(src)
 
-    src['LOGMMETAL'] = fz * (src['LOGMGAS']+src['LOGMDUST_DELOOZE'])
+    src['LOGMMETAL'] = fz * src['LOGMGAS'] + src['LOGMDUST_DELOOZE']
     src.loc[src['LOGMMETAL'] <= 0.01, 'LOGMMETAL'] = np.nan
 
-    src['LOGMMETAL_ERR'] = fz * MF.error_add(src['LOGMGAS'], src['LOGMGAS_ERR'], src['LOGMDUST_DELOOZE'], src['LOGMDUST_DELOOZE_ERR'])[1]
+    src['LOGMMETAL_ERR'] = MF.error_add(fz*src['LOGMGAS'], fz*src['LOGMGAS_ERR'], src['LOGMDUST_DELOOZE'], src['LOGMDUST_DELOOZE_ERR'])[1]
 
     return src
