@@ -116,22 +116,22 @@ def compare():
     fig,ax = plt.subplots()
 
     #compare Mstar vs SFR
-    #BPLT.linmix_plots_multi('VERTICO', df3, df3['LOGMSTAR_DP'], df3['LOGSFR_DP'], df3['LOGMSTAR_DP_ERR'], df3['LOGSFR_DP_ERR'], ax=ax, color=C.COLORS[2], LMcolor=C.COLORS[2])
-    #BPLT.linmix_plots_multi('xCOLDGASS', df2, df2['LOGMSTAR'], df2['LOGSFR_BEST'], df2['LOGMSTAR_ERR'], df2['LOGSFR_BEST_ERR'], ax=ax, color=C.COLORS[1], LMcolor=C.COLORS[1])
-    #BPLT.linmix_plots_multi('JINGLE', df1, df1['LOGMSTAR_MAGPHYS'], df1['LOGSFR_MAGPHYS'], df1['LOGMSTAR_MAGPHYS_ERR'], df1['LOGSFR_MAGPHYS_ERR'], ax=ax, color=C.COLORS[0], LMcolor=C.COLORS[0])
+    BPLT.linmix_plots_multi('VERTICO', df3, df3['LOGMSTAR_DP'], df3['LOGSFR_DP'], df3['LOGMSTAR_DP_ERR'], df3['LOGSFR_DP_ERR'], ax=ax, color=C.COLORS[2], LMcolor=C.COLORS[2])
+    BPLT.linmix_plots_multi('xCOLDGASS', df2, df2['LOGMSTAR'], df2['LOGSFR_BEST'], df2['LOGMSTAR_ERR'], df2['LOGSFR_BEST_ERR'], ax=ax, color=C.COLORS[1], LMcolor=C.COLORS[1])
+    BPLT.linmix_plots_multi('JINGLE', df1, df1['LOGMSTAR_MAGPHYS'], df1['LOGSFR_MAGPHYS'], df1['LOGMSTAR_MAGPHYS_ERR'], df1['LOGSFR_MAGPHYS_ERR'], ax=ax, color=C.COLORS[0], LMcolor=C.COLORS[0])
 
     #compare Mstar vs Mdust
-    #BPLT.linmix_plots_multi('VERTICO', df3, df3['LOGMSTAR_DP'], df3['LOGMDUST_DP'], df3['LOGMSTAR_DP_ERR'], df3['LOGMDUST_DP_ERR'], ax=ax, color=C.COLORS[2], LMcolor=C.COLORS[2])
-    #BPLT.linmix_plots_multi('JINGLE', df1, df1['LOGMSTAR_MAGPHYS'], df1['LOGMDUST_DELOOZE'], df1['LOGMSTAR_MAGPHYS_ERR'], df1['LOGMDUST_DELOOZE_ERR'], ax=ax, color=C.COLORS[0], LMcolor=C.COLORS[0])
+    BPLT.linmix_plots_multi('VERTICO', df3, df3['LOGMSTAR_DP'], df3['LOGMDUST_DP'], df3['LOGMSTAR_DP_ERR'], df3['LOGMDUST_DP_ERR'], ax=ax, color=C.COLORS[2], LMcolor=C.COLORS[2])
+    BPLT.linmix_plots_multi('JINGLE', df1, df1['LOGMSTAR_MAGPHYS'], df1['LOGMDUST_DELOOZE'], df1['LOGMSTAR_MAGPHYS_ERR'], df1['LOGMDUST_DELOOZE_ERR'], ax=ax, color=C.COLORS[0], LMcolor=C.COLORS[0])
 
     #compare Mstar vs MH1
-    #BPLT.linmix_plots_multi('VERTICO', df3, df3['LOGMSTAR_DP'], df3['LOGMH1_DP'], df3['LOGMSTAR_DP_ERR'], df3['LOGMH1_DP_ERR'], ax=ax, color=C.COLORS[2], LMcolor=C.COLORS[2])
-    #BPLT.linmix_plots_multi('JINGLE', df1, df1['LOGMSTAR_MAGPHYS'], df1['LOGMH1'], df1['LOGMSTAR_MAGPHYS_ERR'], df1['LOGMH1_ERR'], ax=ax, color=C.COLORS[0], LMcolor=C.COLORS[0])
+    BPLT.linmix_plots_multi('VERTICO', df3, df3['LOGMSTAR_DP'], df3['LOGMH1_DP'], df3['LOGMSTAR_DP_ERR'], df3['LOGMH1_DP_ERR'], ax=ax, color=C.COLORS[2], LMcolor=C.COLORS[2])
+    BPLT.linmix_plots_multi('JINGLE', df1, df1['LOGMSTAR_MAGPHYS'], df1['LOGMH1'], df1['LOGMSTAR_MAGPHYS_ERR'], df1['LOGMH1_ERR'], ax=ax, color=C.COLORS[0], LMcolor=C.COLORS[0])
 
     #compare Mstar vs MH2
-    #BPLT.linmix_plots_multi('VERTICO', df3, df3['LOGMSTAR_DP'], df3['LOGMH2_BROWN'], df3['LOGMSTAR_DP_ERR'], df3['LOGMH2_BROWN_ERR'], ax=ax, color=C.COLORS[2], LMcolor=C.COLORS[2])
-    #BPLT.linmix_plots_multi('xCOLDGASS', df2, df2['LOGMSTAR'], df2['LOGMH2_ALL'], df2['LOGMSTAR_ERR'], df2['LOGMH2_ALL_ERR'], ax=ax, color=C.COLORS[1], LMcolor=C.COLORS[1])
-    #BPLT.linmix_plots_multi('JINGLE', df1, df1['LOGMSTAR_MAGPHYS'], df1['LOGMH2_ALL'], df1['LOGMSTAR_MAGPHYS_ERR'], df1['LOGMH2_ALL_ERR'], ax=ax, color=C.COLORS[0], LMcolor=C.COLORS[0])
+    BPLT.linmix_plots_multi('VERTICO', df3, df3['LOGMSTAR_DP'], df3['LOGMH2_BROWN'], df3['LOGMSTAR_DP_ERR'], df3['LOGMH2_BROWN_ERR'], ax=ax, color=C.COLORS[2], LMcolor=C.COLORS[2])
+    BPLT.linmix_plots_multi('xCOLDGASS', df2, df2['LOGMSTAR'], df2['LOGMH2_ALL'], df2['LOGMSTAR_ERR'], df2['LOGMH2_ALL_ERR'], ax=ax, color=C.COLORS[1], LMcolor=C.COLORS[1])
+    BPLT.linmix_plots_multi('JINGLE', df1, df1['LOGMSTAR_MAGPHYS'], df1['LOGMH2_ALL'], df1['LOGMSTAR_MAGPHYS_ERR'], df1['LOGMH2_ALL_ERR'], ax=ax, color=C.COLORS[0], LMcolor=C.COLORS[0])
 
     #compare Mstar vs Mmetal
     BPLT.linmix_plots_multi('VERTICO', df3, df3['LOGMSTAR_DP'], df3['LOGMMETAL_DP'], df3['LOGMSTAR_DP_ERR'], df3['LOGMMETAL_DP_ERR'], ax=ax, color=C.COLORS[2], LMcolor=C.COLORS[2])
