@@ -6,33 +6,41 @@ Code used explicitly for collecting and processing the data stored locally
 import pandas as pd
 
 #file locations go here
-JINGLE_MASTER = r"C:\Users\jsmes\OneDrive\Documents\Temp\Thesis\Data\CombinedDatasets\JINGLE_MASTER.csv"
-JINGLE_TEMPEL = r"C:\Users\jsmes\OneDrive\Documents\Temp\Thesis\Data\CombinedDatasets\JINGLE_TEMPEL_FULL.csv"
-SED_FITTINGS = r"C:\Users\jsmes\OneDrive\Documents\Temp\Thesis\Data\CombinedDatasets\SED_FITTINGS.csv"
-XCOLDGASS = r"C:\Users\jsmes\OneDrive\Documents\Temp\Thesis\Data\xCOLDGASS\xCOLDGASS_Near.csv"
-VERTICO = r"C:\Users\jsmes\OneDrive\Documents\Temp\Thesis\Data\CombinedDatasets\VERTICO_DP.csv"
+JINGLE_FLUX = r"C:\Users\jsmes\OneDrive\Documents\Temp\Thesis\Data\Combined Datasets\JINGLE_FluxMeasurements.csv"
+JINGLE_GALAXY = r"C:\Users\jsmes\OneDrive\Documents\Temp\Thesis\Data\Combined Datasets\JINGLE_GalaxyProperties.csv"
+JINGLE_TEMPEL = r"C:\Users\jsmes\OneDrive\Documents\Temp\Thesis\Data\Combined Datasets\JINGLE_TEMPEL.csv"
+VERTICO_DP = r"C:\Users\jsmes\OneDrive\Documents\Temp\Thesis\Data\Combined Datasets\VERTICO_DP.csv"
 
 #header lists go here
-JM_header = ['JINGLEID','IDNUM','RA','DEC','z','z_ERR','Z_PP04_N2','Z_PP04_O3N2','Z_MZR','LOGMSTAR_MAGPHYS','LOGMSTAR_MAGPHYS_ERR','LOGSFR_MAGPHYS','LOGSFR_MAGPHYS_ERR','LOGMDUST_MAGPHYS','LOGMDUST_DELOOZE','-dex','+dex','LOGMH1','LOGMH1_FRAC','LOGMH2','LOGMH2_PRED','LOGMHALO','GROUP_TYPE']
-JT_header = ['IDNUM','GROUP_TYPE','IDGAL','NGAL','DGAL','MNFW','DEN1','FAMID','FAM_SIZE']
-SF_header = ['IDNUM','logMc_SMBB','e_logMc_SMBB','Tc_SMBB','e_Tc_SMBB','logMc_BMBB','e_logMc_BMBB','Tc_BMBB','e_Tc_BMBB','logMc_TMBB','e_logMc_TMBB','Tc_TMBB','e_Tc_TMBB','logMw_TMBB','e_logMw_TMBB','Tw_TMBB','e_Tw_TMBB']
-XCG_header = ['IDNUM','RA','DEC','z','LOGMSTAR','LOGSFR_BEST','LOGSFR_BEST_ERR','Z_PP04_N2','Z_PP04_O3N2','Z_MZR','LOGMH2','LOGMH2_ERR','LOGMH2_PRED']
-V_header = ['NAME','RA','DEC','z','Z_DP_O3N2','LOGMSTAR_DP','LOGMSTAR_DP_ERR','LOGSFR_DP','LOGSFR_DP_ERR','LOGMDUST_DP','LOGMDUST_DP_ERR','LOGMMETAL_DP','LOGMMETAL_DP_ERR','LOGMH1_DP','LOGMH1_DP_ERR','LOGMH2_BROWN','LOGMH2_BROWN_ERR']
+JF_header = ['JINGLEID','IDNUM','FLAG','SCUBA2_850_PeakSNR','SCUBA2_850_Flux','SCUBA2_850_Err',
+             'DETFLAG_850','SN850','F850_CORR','F850ERR_CORR','ICO21','SNCO21','ALPHA_CO']
+
+JG_header = ['JINGLEID','RA','DEC','z','z_ERR','Z_PP04_O3N2','LOGMSTAR_MAGPHYS',
+             'LOGMSTAR_MAGPHYS_ERR','LOGSFR_MAGPHYS','LOGSFR_MAGPHYS_ERR','LOGMHALO_TEMPEL',
+             'GROUPRANK_TEMPEL','GROUPCLASS','LOGMDUST_DELOOZE','dex-','dex+','LOGMH2_RYAN',
+             'LOGMH1_MATT','LOGMH1_MATT_ERR','H1_FLAG']
+
+JT_header = ['JINGLEID','GROUPID','Ngal','Rank','Dist.g','pE','pS0','pSa','pSc','RAgroup',
+             'DEgroup','zgroup','sig.v','Rvir','Rmax','MHALO','MHALO_ERR','Den1','Den2','Den4',
+             'Den8']
+
+V_header = ['ID','RA','DE','Vel','S/N','L_LOGMH2','LOGMH2','LOGMH2_ERR','LOGSFR_DP',
+            'LOGSFR_DP_ERR','LOGMSTAR_DP','LOGMSTAR_DP_ERR','LOGMDUST_DP','LOGMDUST_DP_ERR',
+            'LOGMH1_DP','LOGMH1_DP_ERR','H1_Flag','Z_O3N2','Z_O3N2_ERRDWN','Z_O3N2_ERRUP',
+            'LOGMZ_DP','LOGMZ_DP_ERRDWN','LOGMZ_DP_ERRUP']
 
 #functions go here
 def get_header(file):
     """
     Selects the appropriate header for the selected file.
     """
-    if file == JINGLE_MASTER:
-        header = JM_header
+    if file == JINGLE_FLUX:
+        header = JF_header
     elif file == JINGLE_TEMPEL:
         header = JT_header
-    elif file == SED_FITTINGS:
-        header = SF_header
-    elif file == XCOLDGASS:
-        header = XCG_header
-    elif file == VERTICO:
+    elif file == JINGLE_GALAXY:
+        header = JG_header
+    elif file == VERTICO_DP:
         header = V_header
     else:
         print("Invalid selection")

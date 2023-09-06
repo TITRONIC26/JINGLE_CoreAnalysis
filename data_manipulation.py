@@ -22,35 +22,18 @@ import constants as C
 
 #define functions here
 def JINGLE_main(src):
-    #fixing upper limit duplicates
-    src.loc[src['LOGMH2'] != 0, 'LOGMH2_PRED'] = 0
+    #replace with null values
+    src.loc[src['Z_PP04_O3N2'] < 0, 'Z_PP04_O3N2'] = np.nan
+    src.loc[src['LOGMHALO_TEMPEL'] < 0, 'LOGMHALO_TEMPEL'] = np.nan
+    src.loc[src['LOGMH2_RYAN'] < 0.1, 'LOGMH2_RYAN'] = np.nan
+    src.loc[src['H1_FLAG'] < 0, ['LOGMH1_MATT','LOGMH1_MATT_ERR']] = np.nan
 
-    #generate average errors for DeLooze Dust Masses
-    src['LOGMDUST_DELOOZE_ERR'] = [(abs(g)+abs(h))/2 for g,h in zip(src['-dex'], src['+dex'])]
-    src['LOGMH2_ALL'] = src['LOGMH2'] + src['LOGMH2_PRED']
-
-    src = CA.generate_std_error(src, src['LOGMH1'])
-    src = CA.generate_std_error(src, src['LOGMH2_ALL'])
-
-    src.loc[src['LOGMH1'] <= 0.5, 'LOGMH1'] = np.nan
-    src.loc[src['LOGMH2_ALL'] <= 0.5, 'LOGMH2_ALL'] = np.nan
-
+    src = CA.generate_std_error(src, src['LOGMH2_RYAN'])
+    
+    src['LOGMDUST_DELOOZE_ERR'] = [(abs(g)+abs(h))/2 for g,h in zip(src['dex-'], src['dex+'])]
+    
     #generate the total gas masses and metals
     src = CA.find_Mmetals(src)
-
-    return src
-
-def XCOLDGASS_main(src):
-    #generate average errors for stellar masses
-    src = CA.generate_std_error(src, src['LOGMSTAR'])
-
-    src['LOGMH2_ALL'] = src['LOGMH2'] + src['LOGMH2_PRED']
-
-    src = CA.generate_std_error(src, src['LOGMH2_ALL'])
-
-    src.loc[src['LOGMH2'] <= 0.5, 'LOGMH2'] = np.nan
-    src.loc[src['LOGMH2_PRED'] <= 0.5, 'LOGMH2_PRED'] = np.nan
-    src.loc[src['LOGMH2_ERR'] > 0.01, 'LOGMH2_ALL_ERR'] = src['LOGMH2_ERR']
 
     return src
 

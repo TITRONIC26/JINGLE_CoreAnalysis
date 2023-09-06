@@ -34,16 +34,6 @@ def Calc_Gas_Content_From_Dust(src, dust_type, z_type):
 
     return src['LOGMGAS']
 
-def Calc_Gas_Content_Total(src):
-    h1 = src['LOGMH1'].copy()
-    h2 = src['LOGMH2'].copy()
-    h2_upperLimit = src['LOGMH2_PRED'].copy()
-
-    gasTotal = np.log10(np.float_power(10,h1) + np.float_power(10,h2))
-    gasTotal_upperLimit = np.log10(np.float_power(10,h1) + np.float_power(10,h2_upperLimit))
-
-    return (gasTotal, gasTotal_upperLimit)
-
 def Group_By_Env(src):
     src['GALACTIC_ENV'] = pd.DataFrame(np.zeros(len(src['IDNUM'])))
     
@@ -97,23 +87,23 @@ def generate_std_error(src, column):
     return src
 
 def find_Mgas(src):
-    vals = MF.error_add(src['LOGMH1'], src['LOGMH1_ERR'], src['LOGMH2_ALL'], src['LOGMH2_ALL_ERR'])
+    vals = MF.error_add(src['LOGMH1_MATT'], src['LOGMH1_MATT_ERR'], src['LOGMH2_RYAN'], src['LOGMH2_RYAN_ERR'])
     src['LOGMGAS'] = vals[0]
     src['LOGMGAS_ERR'] = vals[1]
+    src['MGAS_FLAG'] = 0
+
+    src.loc[(pd.notnull(src['LOGMH1_MATT'])) & (pd.isnull(src['LOGMH2_RYAN'])), 'MGAS_FLAG'] = 1
+    src.loc[(pd.isnull(src['LOGMH1_MATT'])) & (pd.notnull(src['LOGMH2_RYAN'])), 'MGAS_FLAG'] = 2
+    src.loc[(pd.notnull(src['LOGMH1_MATT'])) & (pd.notnull(src['LOGMH2_RYAN'])), 'MGAS_FLAG'] = 3
 
     return src
 
 def find_Mmetals(src):
-    fz0 = C.F_Z0
-    oxygen = C.REF_METALICITY
-
     fz = 27.36*np.float_power(10, (src['Z_PP04_O3N2'] - 12))
 
     src = find_Mgas(src)
 
-    src['LOGMMETAL'] = fz * src['LOGMGAS'] + src['LOGMDUST_DELOOZE']
-    src.loc[src['LOGMMETAL'] <= 0.01, 'LOGMMETAL'] = np.nan
-
-    src['LOGMMETAL_ERR'] = MF.error_add(fz*src['LOGMGAS'], fz*src['LOGMGAS_ERR'], src['LOGMDUST_DELOOZE'], src['LOGMDUST_DELOOZE_ERR'])[1]
+    src['LOGMZ'] = fz * src['LOGMGAS'] + src['LOGMDUST_DELOOZE']
+    src['LOGMZ_ERR'] = MF.error_add(fz*src['LOGMGAS'], fz*src['LOGMGAS_ERR'], src['LOGMDUST_DELOOZE'], src['LOGMDUST_DELOOZE_ERR'])[1]
 
     return src

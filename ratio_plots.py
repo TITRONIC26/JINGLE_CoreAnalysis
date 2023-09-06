@@ -1,22 +1,15 @@
 """
+OUTDATED
 Plots generated using the ratios of different parameters within the JINGLE data set
 """
 
 #import libraries here
-import pandas as pd
 import numpy as np
-import matplotlib as mpl
 import matplotlib.pyplot as plt
-import scipy as sci
-import statistics as stat
-import math as mt
 
 #import other scripts and constants here
-import gather_data as GD
 import constants as C
-import core_analysis as CA
 import linmixer as LM
-import formatting_functions as FF
 import math_funcs as MF
 
 #declare global parameters here

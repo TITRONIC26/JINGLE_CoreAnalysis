@@ -35,11 +35,5 @@ def main():
 #call on the main function when the script is executed
 if __name__ == '__main__':
     main()
-    #CF.jingle_galaxy_base_parameters()
-    #CF.gas_content_comparisons()
-    #CF.specific_SFR()
-    #CF.grouped_by(Env=False)
-    #CF.galaxy_ratios()
-    CF.compare()
-
-    #FF.print_full(CF.src5)
+    CF.main()
+    

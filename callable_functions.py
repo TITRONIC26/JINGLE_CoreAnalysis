@@ -7,26 +7,41 @@ This script is not intended to perform explicit plotting, calculations, or other
 import pandas as pd
 import matplotlib.pyplot as plt
 
-#import other scripts here
-import gather_data as GD
+#plotting scripts
 import base_plotter as BPLT
-import core_analysis as CA
 import ratio_plots as RPLT
+
+#essential scripts
+import gather_data as GD
 import constants as C
+
+#data analysis and manipulation
+import core_analysis as CA
 import data_manipulation as DM
 
+#formatting
+import formatting_functions as FF
+
 #set-up parameters and globals here
-src1 = GD.get_data(GD.JINGLE_MASTER)
-src2 = GD.get_data(GD.SED_FITTINGS)
+src1 = GD.get_data(GD.JINGLE_GALAXY)
+src2 = GD.get_data(GD.JINGLE_FLUX)
 src3 = GD.get_data(GD.JINGLE_TEMPEL)
-src4 = GD.get_data(GD.XCOLDGASS)
-src5 = GD.get_data(GD.VERTICO)
+src4 = GD.get_data(GD.VERTICO_DP)
 
-#fix src1 data
+#fix src data
 src1 = DM.JINGLE_main(src1)
-src4 = DM.XCOLDGASS_main(src4)
-src5 = DM.VERTICO_main(src5)
+src4 = DM.VERTICO_main(src4)
 
+def main():
+    FF.print_full(src1)
+    FF.print_full(src4)
+
+#call on the main function when the script is executed
+if __name__ == '__main__':
+    main()
+
+"""
+Old functions, for archival purposes...
 def jingle_galaxy_base_parameters(Dust = True, Gas = True, SFR = True):
     if Dust == True:
         df1 = src1[['JINGLEID','IDNUM','LOGMSTAR_MAGPHYS','LOGMSTAR_MAGPHYS_ERR','LOGMDUST_MAGPHYS','LOGMDUST_DELOOZE','-dex','+dex']].copy()
@@ -138,3 +153,4 @@ def compare():
     BPLT.linmix_plots_multi('JINGLE', df1, df1['LOGMSTAR_MAGPHYS'], df1['LOGMMETAL'], df1['LOGMSTAR_MAGPHYS_ERR'], df1['LOGMMETAL_ERR'], ax=ax, color=C.COLORS[0], LMcolor=C.COLORS[0])
 
     plt.show()
+"""

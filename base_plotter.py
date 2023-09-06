@@ -1,19 +1,13 @@
 """
+OUTDATED
 Script reserved exclusively for plotting data from other sections.
 Includes the plots from every section, so be mindful of the length of this script.
 """
 
 #import libraries here
 import pandas as pd
-import numpy as np
-import matplotlib as mpl
 import matplotlib.pyplot as plt
-import scipy as sci
-import statistics as stat
-import math as mt
-
 #import other scripts and constants here
-import gather_data as GD
 import constants as C
 import core_analysis as CA
 import linmixer as LM
