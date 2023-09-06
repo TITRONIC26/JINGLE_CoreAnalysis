@@ -5,17 +5,13 @@ This script is intended for functions that will modify the original values and p
 #import libraries here
 import pandas as pd
 import numpy as np
-import matplotlib as mpl
-import scipy as sci
 import math as mt
 
 #import scripts here
 import constants as C
-import formatting_functions as FF
 import math_funcs as MF
 
 #global variables here
-
 
 #function definitions here
 def Reference_Scaling(src, z_type):
@@ -41,11 +37,11 @@ def Group_By_Env(src):
     for x in src['IDNUM']:
         idx = src.index[src['IDNUM'] == x][0]
 
-        if (src['LOGMHALO'][idx] >= C.HALOMASS_HIGH) and (src['NGAL'][idx] >= C.NGAL_HIGH):
+        if (src['LOGMHALO_TEMPEL'][idx] >= C.HALOMASS_HIGH) and (src['NGAL'][idx] >= C.NGAL_HIGH):
             src['GALACTIC_ENV'][idx] = 'Cluster'
-        elif (src['LOGMHALO'][idx] >= C.HALOMASS_LOW) and (src['NGAL'][idx] >= C.NGAL_LOW):
+        elif (src['LOGMHALO_TEMPEL'][idx] >= C.HALOMASS_LOW) and (src['NGAL'][idx] >= C.NGAL_LOW):
             src['GALACTIC_ENV'][idx] = 'Group'
-        elif (src['LOGMHALO'][idx] >= C.HALOMASS_LOW):
+        elif (src['LOGMHALO_TEMPEL'][idx] >= C.HALOMASS_LOW):
             src['GALACTIC_ENV'][idx] = 'Small Group'
         elif (src['NGAL'][idx] == 2):
             src['GALACTIC_ENV'][idx] = 'Binary Pair'
@@ -64,7 +60,7 @@ def Group_By_Dens(src):
     for x in src['IDNUM']:
         idx = src.index[src['IDNUM'] == x][0]
 
-        if (src['LOGMHALO'][idx] >= C.HALOMASS_LOW) and (src['NGAL'][idx] >= C.NGAL_LOW):
+        if (src['LOGMHALO_TEMPEL'][idx] >= C.HALOMASS_LOW) and (src['NGAL'][idx] >= C.NGAL_LOW):
             src['GALACTIC_DENS'][idx] = 'High-Density'
         elif (src['NGAL'][idx] <= 2):
             src['GALACTIC_DENS'][idx] = 'Low-Density'

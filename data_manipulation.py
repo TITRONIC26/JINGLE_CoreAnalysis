@@ -3,20 +3,10 @@ Python script aimed at modifying the data directly from the CSV file
 """
 
 #import libraries here
-import pandas as pd
 import numpy as np
-import matplotlib as mpl
-import matplotlib.pyplot as plt
-import scipy as sci
-import math as mt
 
 #import other scripts here
-import gather_data as GD
-import base_plotter as BPLT
 import core_analysis as CA
-import formatting_functions as FF
-import ratio_plots as RPLT
-import constants as C
 
 #declare global variables here
 

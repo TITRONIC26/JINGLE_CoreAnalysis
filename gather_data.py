@@ -20,8 +20,8 @@ JG_header = ['JINGLEID','RA','DEC','z','z_ERR','Z_PP04_O3N2','LOGMSTAR_MAGPHYS',
              'GROUPRANK_TEMPEL','GROUPCLASS','LOGMDUST_DELOOZE','dex-','dex+','LOGMH2_RYAN',
              'LOGMH1_MATT','LOGMH1_MATT_ERR','H1_FLAG']
 
-JT_header = ['JINGLEID','GROUPID','Ngal','Rank','Dist.g','pE','pS0','pSa','pSc','RAgroup',
-             'DEgroup','zgroup','sig.v','Rvir','Rmax','MHALO','MHALO_ERR','Den1','Den2','Den4',
+JT_header = ['JINGLEID','GROUPID','NGAL','Rank','Dist.g','pE','pS0','pSa','pSc','RAgroup',
+             'DEgroup','zgroup','sig.v','Rvir','Rmax','LOGMHALO_TEMPEL','LOGMHALO_TEMPEL_ERR','Den1','Den2','Den4',
              'Den8']
 
 V_header = ['ID','RA','DE','Vel','S/N','L_LOGMH2','LOGMH2','LOGMH2_ERR','LOGSFR_DP',
