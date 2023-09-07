@@ -40,14 +40,14 @@ def func(x,m,b):
 
 def curvefitting(x,y, axs=plt, color='Black'):
     popt,pcov = cf(func, x, y, maxfev=10000)
-    xdata = np.linspace(x.min()-1, x.max()+1, 100)
+    xdata = np.linspace(x.min()-3, x.max()+3, 100)
     val1 = str("{0:.3g}".format(popt[0]))
     val2 = str("{0:.1g}".format(pcov[0,0]))
     eqn = 'm = '+val1+r' $\pm$ '+val2
 
     axs.plot(xdata, func(xdata, *popt), '--', color=color, label=eqn)
-    axs.set_xlim(x.min()-0.25, x.max()+0.25)
-    axs.set_ylim(y.min()-0.25, y.max()+0.25)
+    axs.set_xlim(x.min()-2, x.max()+1)
+    axs.set_ylim(y.min()-2, y.max()+1)
 
 def pearson(x,y, axs=plt):
     results = stats.pearsonr(x,y)

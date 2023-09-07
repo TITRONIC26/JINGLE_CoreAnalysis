@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 #plotting scripts
 import base_plotter as BPLT
 import ratio_plots as RPLT
+import plotter as PLT
 
 #essential scripts
 import gather_data as GD
@@ -18,6 +19,7 @@ import constants as C
 #data analysis and manipulation
 import core_analysis as CA
 import data_manipulation as DM
+import linmixer as LM
 
 #formatting
 import formatting_functions as FF
@@ -33,8 +35,24 @@ src1 = DM.JINGLE_main(src1)
 src4 = DM.VERTICO_main(src4)
 
 def main():
-    FF.print_full(src1)
-    FF.print_full(src4)
+    #FF.print_full(src1)
+    total_gas()
+
+def total_gas():
+    df1 = src1[['LOGMSTAR_MAGPHYS','LOGMSTAR_MAGPHYS_ERR','LOGMH2_RYAN','LOGMH1_MATT','LOGMH1_MATT_ERR','H1_FLAG','LOGMH2_RYAN_ERR','LOGMGAS','LOGMGAS_ERR','MGAS_FLAG','JINGLEID']].copy()
+    df2 = src3[['JINGLEID','NGAL','LOGMHALO_TEMPEL']].copy()
+    df3 = src2[['JINGLEID','IDNUM']].copy()
+
+    src = pd.merge(df1, df2, on='JINGLEID')
+    src = pd.merge(src, df3, on='JINGLEID')
+
+    src = CA.Group_By_Dens(src)
+    grouper = src.groupby('GALACTIC_DENS')
+
+    for key, group in grouper:
+        print(key)
+        PLT.gas_plots(group, vertico=True)
+
 
 #call on the main function when the script is executed
 if __name__ == '__main__':

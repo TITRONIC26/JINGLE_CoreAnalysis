@@ -11,6 +11,11 @@ JINGLE_GALAXY = r"C:\Users\jsmes\OneDrive\Documents\Temp\Thesis\Data\Combined Da
 JINGLE_TEMPEL = r"C:\Users\jsmes\OneDrive\Documents\Temp\Thesis\Data\Combined Datasets\JINGLE_TEMPEL.csv"
 VERTICO_DP = r"C:\Users\jsmes\OneDrive\Documents\Temp\Thesis\Data\Combined Datasets\VERTICO_DP.csv"
 
+#minor file locations go here
+RYAN_ISM = r"c:\Users\jsmes\OneDrive\Documents\Temp\Thesis\Data\Special_Datasets\Ryan_ISM_Masses.csv"
+DELOOZE = r"C:\Users\jsmes\OneDrive\Documents\Temp\Thesis\Data\Special_Datasets\DeLooze_DustMasses.csv"
+
+
 #header lists go here
 JF_header = ['JINGLEID','IDNUM','FLAG','SCUBA2_850_PeakSNR','SCUBA2_850_Flux','SCUBA2_850_Err',
              'DETFLAG_850','SN850','F850_CORR','F850ERR_CORR','ICO21','SNCO21','ALPHA_CO']
@@ -48,17 +53,19 @@ def get_header(file):
     
     return header
 
-def get_data(file):
+def get_data(file, keep=False):
     """
     Extract the data from the selected file location.
     """
     try:
-        #grab the appropriate header file
-        name = get_header(file)
-        #extract the data from the csv
-        data = pd.read_csv(file, sep=',', header=0, names=name)
-        #print a summary of the key information within the dataset to confirm the selection
-        #print(data.describe())
+        if keep == True:
+            #extract the data from the csv
+            data = pd.read_csv(file, sep=',')
+        else:
+            #grab the appropriate header file
+            name = get_header(file)
+            #extract the data from the csv
+            data = pd.read_csv(file, sep=',', header=0, names=name)
     
     except Exception as e:
         #return the error causing the issue
