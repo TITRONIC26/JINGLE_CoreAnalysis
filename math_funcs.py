@@ -24,3 +24,9 @@ def error_add(A, a, B, b):
     z = addErrors(a,b)
 
     return (Z,z)
+
+def error_subtract(A, a, B, b):
+    Z = A - B
+    z = addErrors(a,b)
+
+    return (Z,z)

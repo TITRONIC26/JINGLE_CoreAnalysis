@@ -29,6 +29,7 @@ src1 = GD.get_data(GD.JINGLE_GALAXY)
 src2 = GD.get_data(GD.JINGLE_FLUX)
 src3 = GD.get_data(GD.JINGLE_TEMPEL)
 src4 = GD.get_data(GD.VERTICO_DP)
+src5 = GD.get_data(GD.VERTICO)
 
 #fix src data
 src1 = DM.JINGLE_main(src1)
@@ -39,7 +40,7 @@ def main():
     total_gas()
 
 def total_gas():
-    df1 = src1[['LOGMSTAR_MAGPHYS','LOGMSTAR_MAGPHYS_ERR','LOGMH2_RYAN','LOGMH1_MATT','LOGMH1_MATT_ERR','H1_FLAG','LOGMH2_RYAN_ERR','LOGMGAS','LOGMGAS_ERR','MGAS_FLAG','JINGLEID']].copy()
+    df1 = src1[['LOGMSTAR_MAGPHYS','LOGMSTAR_MAGPHYS_ERR','LOGSFR_MAGPHYS','LOGSFR_MAGPHYS_ERR','LOGMH2_RYAN','LOGMH1_MATT','LOGMH1_MATT_ERR','H1_FLAG','LOGMH2_RYAN_ERR','LOGMGAS','LOGMGAS_ERR','MGAS_FLAG','JINGLEID']].copy()
     df2 = src3[['JINGLEID','NGAL','LOGMHALO_TEMPEL']].copy()
     df3 = src2[['JINGLEID','IDNUM']].copy()
 
@@ -50,8 +51,10 @@ def total_gas():
     grouper = src.groupby('GALACTIC_DENS')
 
     for key, group in grouper:
-        print(key)
-        PLT.gas_plots(group, vertico=True)
+        if key == 'High-Density':
+            PLT.GalacticDensity_gas_plots(group, sSFR=True)
+
+
 
 
 #call on the main function when the script is executed

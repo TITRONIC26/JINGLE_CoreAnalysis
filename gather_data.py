@@ -10,6 +10,8 @@ JINGLE_FLUX = r"C:\Users\jsmes\OneDrive\Documents\Temp\Thesis\Data\Combined Data
 JINGLE_GALAXY = r"C:\Users\jsmes\OneDrive\Documents\Temp\Thesis\Data\Combined Datasets\JINGLE_GalaxyProperties.csv"
 JINGLE_TEMPEL = r"C:\Users\jsmes\OneDrive\Documents\Temp\Thesis\Data\Combined Datasets\JINGLE_TEMPEL.csv"
 VERTICO_DP = r"C:\Users\jsmes\OneDrive\Documents\Temp\Thesis\Data\Combined Datasets\VERTICO_DP.csv"
+XCOLD_GASS = r"C:\Users\jsmes\OneDrive\Documents\Temp\Thesis\Data\Combined Datasets\xCOLD_GASS.csv"
+VERTICO = r"C:\Users\jsmes\OneDrive\Documents\Temp\Thesis\Data\Combined Datasets\VERTICO.csv"
 
 #minor file locations go here
 RYAN_ISM = r"c:\Users\jsmes\OneDrive\Documents\Temp\Thesis\Data\Special_Datasets\Ryan_ISM_Masses.csv"
@@ -34,6 +36,10 @@ V_header = ['ID','RA','DE','Vel','S/N','L_LOGMH2','LOGMH2','LOGMH2_ERR','LOGSFR_
             'LOGMH1_DP','LOGMH1_DP_ERR','H1_Flag','Z_O3N2','Z_O3N2_ERRDWN','Z_O3N2_ERRUP',
             'LOGMZ_DP','LOGMZ_DP_ERRDWN','LOGMZ_DP_ERRUP']
 
+XCG_header = ['ID','RA','DEC','z','LOGMSTAR','LOGSFR','LOGSFR_ERR','Z_PP04_O3N2','LOGMH2','LOGMH2_ERR','LOGMH2_LIM','LOGMH1','LOGMH1_Q']
+
+VERT_header = ['ID','RA','DE','Vel','S/N','L_LOGMH2','LOGMH2','LOGMH2_ERR','LOGMSTAR','LOGMSTAR_ERR','LOGMH1','LOGMH1_ERR']
+
 #functions go here
 def get_header(file):
     """
@@ -47,6 +53,10 @@ def get_header(file):
         header = JG_header
     elif file == VERTICO_DP:
         header = V_header
+    elif file == XCOLD_GASS:
+        header = XCG_header
+    elif file == VERTICO:
+        header = VERT_header
     else:
         print("Invalid selection")
         header = []

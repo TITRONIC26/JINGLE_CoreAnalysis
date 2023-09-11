@@ -5,6 +5,7 @@ New plotting script for plotting the data gathered from the 4 new datafiles
 #libraries
 import numpy as np
 import matplotlib.pyplot as plt
+import pandas as pd
 
 #old plotting scripts
 import base_plotter as BPLT
@@ -19,6 +20,8 @@ import constants as C
 import core_analysis as CA
 import data_manipulation as DM
 import linmixer as LM
+
+import math_funcs as MF
 
 #formatting
 import formatting_functions as FF
@@ -108,5 +111,62 @@ def gas_plots(src, vertico=False):
 
     plt.show()
 
-
     return
+
+def GalacticDensity_gas_plots(src, sSFR=False):
+    #'ID','RA','DE','Vel','S/N','L_LOGMH2','LOGMH2','LOGMH2_ERR','LOGMSTAR','LOGMSTAR_ERR','LOGMH1','LOGMH1_ERR'
+    vert = CF.src5.copy()
+    verDP = CF.src4[['ID','LOGSFR_DP','LOGSFR_DP_ERR']].copy()
+
+    ver = pd.merge(vert, verDP, on='ID')
+
+    FF.print_full(ver)
+
+    #'LOGMSTAR_MAGPHYS','LOGMSTAR_MAGPHYS_ERR','LOGSFR_MAGPHYS','LOGSFR_MAGPHYS_ERR','LOGMH2_RYAN','LOGMH1_MATT','LOGMH1_MATT_ERR','H1_FLAG','LOGMH2_RYAN_ERR','LOGMGAS','LOGMGAS_ERR','MGAS_FLAG'
+
+    #plot of sfr vs stellar mass
+    fig, ax = plt.subplots()
+
+    index_up = src.index[(src['H1_FLAG'] == 0)].tolist()
+    index = src.index[(src['H1_FLAG'] == 1)].tolist()
+
+    lenth = str(len(index))
+
+    if sSFR == True:
+        vals = MF.error_subtract(src['LOGMH1_MATT'], src['LOGMH1_MATT_ERR'], src['LOGMSTAR_MAGPHYS'], src['LOGMSTAR_MAGPHYS_ERR'])
+        values = vals[0]
+        value_err = vals[1]
+    else:
+        values = src['LOGMH1_MATT']
+        value_err = src['LOGMH1_MATT_ERR']
+
+    ax.errorbar(src['LOGMSTAR_MAGPHYS'][index], values[index], value_err[index], src['LOGMSTAR_MAGPHYS_ERR'][index], fmt='o', c='Blue', ecolor='Blue', label='JINGLE '+lenth, alpha=0.75)
+    ax.errorbar(src['LOGMSTAR_MAGPHYS'][index_up], values[index_up], value_err[index_up], src['LOGMSTAR_MAGPHYS_ERR'][index_up], fmt='o', mfc='white', c='Blue', ecolor='Blue')
+    LM.curvefitting(src['LOGMSTAR_MAGPHYS'][index], values[index], axs=ax, color='Blue')
+
+    if sSFR == True:
+        ver_vals = MF.error_subtract(ver['LOGMH1'], ver['LOGMH1_ERR'], ver['LOGMSTAR'], ver['LOGMSTAR_ERR'])
+        ver_values = ver_vals[0]
+        ver_value_err = ver_vals[1]
+    else:
+        ver_values = ver['LOGMH1']
+        ver_value_err = ver['LOGMH1_ERR']
+
+    ax.errorbar(ver['LOGMSTAR'], ver_values, ver_value_err, ver['LOGMSTAR_ERR'], fmt='s', c='Grey', ecolor='Grey', label='VERTICO', alpha=0.75)
+    flag = ver.index[(ver['LOGMSTAR'].notnull()) & (ver['LOGMH1'].notnull())].tolist()
+    LM.curvefitting(ver['LOGMSTAR'][flag], ver_values[flag], axs=ax, color='Black')
+
+    ax.set_ylabel('$M_{HI}$/$M_{star}$ [Log ()]')
+    ax.set_xlabel('$M_{star}}$ [Log ($M_{\odot}$)]')
+
+    ax.set_xlim(8.75, 11.5)
+    ax.set_ylim(-3.5, 1)
+
+    #formatting plot
+    box = ax.get_position()
+    ax.set_position([box.x0, box.y0, box.width * 0.8, box.height])
+    ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+
+    plt.show()
+
+    
