@@ -62,8 +62,8 @@ def Group_By_Dens(src):
 
         if (src['LOGMHALO_TEMPEL'][idx] >= C.HALOMASS_LOW) and (src['NGAL'][idx] >= C.NGAL_LOW):
             src['GALACTIC_DENS'][idx] = 'High-Density'
-        elif (src['NGAL'][idx] <= 2):
-            src['GALACTIC_DENS'][idx] = 'Low-Density'
+        #elif (src['NGAL'][idx] <= 2):
+        #    src['GALACTIC_DENS'][idx] = 'Low-Density'
         else:
             src['GALACTIC_DENS'][idx] = 'Medium-Density'
     #"""
@@ -83,9 +83,9 @@ def generate_std_error(src, column):
     return src
 
 def find_Mgas(src):
-    vals = MF.error_add(src['LOGMH1_MATT'], src['LOGMH1_MATT_ERR'], src['LOGMH2_RYAN'], src['LOGMH2_RYAN_ERR'])
-    src['LOGMGAS'] = vals[0]
-    src['LOGMGAS_ERR'] = vals[1]
+    vals = MF.error_add(np.power(10,src['LOGMH1_MATT']), np.log(10)*np.power(10,src['LOGMH1_MATT'])*(src['LOGMH1_MATT_ERR']), np.power(10,src['LOGMH2_RYAN']), np.log(10)*np.power(10,src['LOGMH2_RYAN'])*(src['LOGMH2_RYAN_ERR']))
+    src['LOGMGAS'] = np.log10(vals[0])
+    src['LOGMGAS_ERR'] = (1/np.log(10)) * ((vals[1])/(vals[0]))
     src['MGAS_FLAG'] = 0
 
     src.loc[(pd.notnull(src['LOGMH1_MATT'])) & (pd.isnull(src['LOGMH2_RYAN'])), 'MGAS_FLAG'] = 1

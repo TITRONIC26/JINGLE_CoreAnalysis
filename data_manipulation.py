@@ -39,3 +39,20 @@ def VERTICO_main(src):
     src['LOGMDUST_DP'] = np.log10(src['LOGMDUST_DP'])
 
     return src
+
+def HERACLES_main(src):
+    #convert normal to log base 10 values.
+    src['MH2/MH1'] = np.log10(src['MH2/MH1'])
+    src['MH2/MSTAR'] = np.log10(src['MH2/MSTAR'])
+    src['MGAS/MSTAR'] = np.log10(src['MGAS/MSTAR'])
+    src['MG/MS_5L'] = np.log10(src['MG/MS_5L'])
+    src['LOGSFR'] = np.log10(src['LOGSFR'])
+
+    return src
+
+def XCG_main(src):
+    #make 0s NaNs
+    src.loc[src['LOGMH2'] < 0.1, 'LOGMH2'] = np.nan
+    src.loc[src['LOGMH2_LIM'] < 0.1, 'LOGMH2_LIM'] = np.nan
+
+    return src

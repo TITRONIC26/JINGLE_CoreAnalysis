@@ -6,6 +6,7 @@ New plotting script for plotting the data gathered from the 4 new datafiles
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
+import math as mt
 
 #old plotting scripts
 import base_plotter as BPLT
@@ -168,5 +169,62 @@ def GalacticDensity_gas_plots(src, sSFR=False):
     ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
 
     plt.show()
+
+def GalacticDensity_field_plots(src):
+    xcg = CF.src6[['LOGMSTAR','LOGMH2','LOGMH2_LIM','LOGMH1','LOGSFR']].copy()
+    her = CF.src7[['MH2/MH1','MH2/MSTAR','MGAS/MSTAR','LOGMSTAR','LOGMH1','LOGMH2','LOGSFR']].copy()
+
+    xcg['LOGMGAS'] = np.log10(np.power(10,xcg['LOGMH1'])+np.power(10,xcg['LOGMH2']))
+    xcg['LOGMGAS_LIM'] = np.log10(np.power(10,xcg['LOGMH1'])+np.power(10,xcg['LOGMH2_LIM']))
+
+
+    her_ind = her.index[(her['MGAS/MSTAR'].notnull()) & her['LOGMSTAR'].notnull()].tolist()
+
+    flag_1 = src.index[(src['MGAS_FLAG'] == 1) & (src['H1_FLAG'] == 1)].tolist()
+    flag_1_up = src.index[(src['MGAS_FLAG'] == 1) & (src['H1_FLAG'] == 0)].tolist()
+
+    flag_2 = src.index[src['LOGMH2_RYAN'].notnull()].tolist()
+
+    flag_3 = src.index[(src['MGAS_FLAG'] == 3) & (src['H1_FLAG'] == 1)].tolist()
+    flag_3_up = src.index[(src['MGAS_FLAG'] == 3) & (src['H1_FLAG'] == 0)].tolist()
+
+    xcg_ind = xcg.index[(xcg['LOGMH2'].notnull()) & (xcg['LOGMSTAR'].notnull()) & (xcg['LOGMH1'].notnull())].tolist()
+    xcg_ind_up = xcg.index[(xcg['LOGMH2_LIM'].notnull()) & (xcg['LOGMSTAR'].notnull()) & (xcg['LOGMH1'].notnull())].tolist()
+
+    FF.print_full(src)
+    FF.print_full(xcg.loc)
+    FF.print_full(her)
+
+    fig, ax = plt.subplots()
+
+    y_vals = xcg['LOGMGAS'] - xcg['LOGMSTAR']
+    ax.errorbar(xcg['LOGMSTAR'][xcg_ind], y_vals[xcg_ind], fmt='s', c='Grey', label='xColdGass '+str(len(xcg_ind)+len(xcg_ind_up)), alpha=0.75)
+    y_vals = xcg['LOGMGAS_LIM'] - xcg['LOGMSTAR']
+    ax.errorbar(xcg['LOGMSTAR'][xcg_ind_up], y_vals[xcg_ind_up], fmt='s', mfc='White', c='Grey', alpha=0.75)
+    #LM.curvefitting(xcg['LOGMSTAR'][xcg_ind], y_vals[xcg_ind], axs=ax, color='Black')
+
+    ax.errorbar(her['LOGMSTAR'][her_ind], her['MGAS/MSTAR'][her_ind], fmt='D', c='Red', label='HERACLES '+str(len(her_ind)), alpha=0.75)
+    LM.curvefitting(her['LOGMSTAR'][her_ind], her['MGAS/MSTAR'][her_ind], axs=ax, color='darkred')
+
+    vals = MF.error_subtract(src['LOGMGAS'], src['LOGMGAS_ERR'], src['LOGMSTAR_MAGPHYS'], src['LOGMSTAR_MAGPHYS_ERR'])
+    y_vals = vals[0]
+    y_err = vals[1]
+    ax.errorbar(src['LOGMSTAR_MAGPHYS'][flag_3], y_vals[flag_3], y_err[flag_3], src['LOGMSTAR_MAGPHYS_ERR'][flag_3], fmt='o', c='Blue', ecolor='Blue', label='JINGLE '+str(len(flag_3)+len(flag_3_up)), alpha=0.75)
+    ax.errorbar(src['LOGMSTAR_MAGPHYS'][flag_3_up], y_vals[flag_3_up], y_err[flag_3_up], src['LOGMSTAR_MAGPHYS_ERR'][flag_3_up], fmt='o', mfc='White', c='Blue', ecolor='Blue', alpha=0.75)
+    LM.curvefitting(src['LOGMSTAR_MAGPHYS'][flag_3], y_vals[flag_3], axs=ax, color='Blue')
+
+    ax.set_ylabel('$M_{Gas}$/$M_{star}$ [Log ()]')
+    ax.set_xlabel('$M_{star}}$ [Log ($M_{\odot}$)]')
+
+    ax.set_xlim(8.75, 11.5)
+    ax.set_ylim(-1.5, 0.75)
+
+    #formatting plot
+    box = ax.get_position()
+    ax.set_position([box.x0, box.y0, box.width * 0.8, box.height])
+    ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+
+    plt.show()
+
 
     
