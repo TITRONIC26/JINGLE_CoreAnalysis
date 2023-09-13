@@ -55,4 +55,6 @@ def XCG_main(src):
     src.loc[src['LOGMH2'] < 0.1, 'LOGMH2'] = np.nan
     src.loc[src['LOGMH2_LIM'] < 0.1, 'LOGMH2_LIM'] = np.nan
 
+    src = CA.generate_std_error(src, src['LOGMH1'])
+
     return src

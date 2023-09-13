@@ -226,5 +226,105 @@ def GalacticDensity_field_plots(src):
 
     plt.show()
 
+def JINGLE_total_gas(vertico=True, xcoldgass=True, heracles=True):
+    jngl = CF.src1[['LOGMSTAR_MAGPHYS','LOGMSTAR_MAGPHYS_ERR','LOGMH2_RYAN','LOGMH1_MATT','LOGMH1_MATT_ERR','H1_FLAG','LOGMH2_RYAN_ERR','LOGMGAS','LOGMGAS_ERR','MGAS_FLAG','LOGMDUST_DELOOZE','LOGMDUST_DELOOZE_ERR']].copy()
 
+    flag_3 = jngl.index[(jngl['MGAS_FLAG'] == 3) & (jngl['H1_FLAG'] == 1)].tolist()
+    flag_3_up = jngl.index[(jngl['MGAS_FLAG'] == 3) & (jngl['H1_FLAG'] == 0)].tolist()
+
+    flag = jngl.index[(jngl['LOGMGAS'].notnull())].tolist()
+
+    flag_0 = jngl.index[(jngl['MGAS_FLAG'] != 3)].tolist()
+
+    fig,ax = plt.subplots()
+
+    ax.axline((0,0), slope=1, c='Black', alpha=0.1)
+
+    ax.errorbar(jngl['LOGMDUST_DELOOZE'][flag_3], jngl['LOGMGAS'][flag_3], jngl['LOGMGAS_ERR'][flag_3], jngl['LOGMDUST_DELOOZE_ERR'][flag_3], fmt='o', c='Blue', ecolor='Blue', label='JINGLE '+str(len(flag_3)+len(flag_3_up)), alpha=0.75)
+    ax.errorbar(jngl['LOGMDUST_DELOOZE'][flag_3_up], jngl['LOGMGAS'][flag_3_up], jngl['LOGMGAS_ERR'][flag_3_up], jngl['LOGMDUST_DELOOZE_ERR'][flag_3_up], fmt='o', mfc='White', c='Blue', ecolor='Blue', alpha=0.75)
+    LM.linmixing(jngl['LOGMDUST_DELOOZE'][flag], jngl['LOGMGAS'][flag], jngl['LOGMDUST_DELOOZE_ERR'][flag], jngl['LOGMGAS_ERR'][flag], axs=ax, color='Blue')
+    LM.curvefitting(jngl['LOGMDUST_DELOOZE'][flag], jngl['LOGMGAS'][flag], axs=ax)
+    LM.pearson(jngl['LOGMDUST_DELOOZE'][flag], jngl['LOGMGAS'][flag], axs=ax)
+
+    ax.set_ylabel('$M_{Gas}$ [Log ($M_{\odot}$)]')      
+    ax.set_xlabel('$M_{Dust}}$ [Log ($M_{\odot}$)]')
+
+    ax.set_xlim(6, 9)
+    ax.set_ylim(8.5, 11)
+
+    #formatting plot
+    box = ax.get_position()
+    ax.set_position([box.x0, box.y0, box.width * 0.8, box.height])
+    ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+
+    plt.show()
     
+    G2DR = (jngl['LOGMGAS'][flag] - jngl['LOGMDUST_DELOOZE'][flag]).mean()
+    G2DR_ERR = (np.sqrt(np.power(jngl['LOGMGAS_ERR'][flag], 2) + np.power(jngl['LOGMDUST_DELOOZE_ERR'][flag], 2))).mean()
+
+    fig,ax = plt.subplots()
+
+    ax.axline((0,0), slope=1, c='Black', alpha=0.1)
+
+    y_val = G2DR + jngl['LOGMDUST_DELOOZE'][flag_0]
+    y_val_err = y_val * np.sqrt(mt.pow(G2DR_ERR/G2DR,2) + np.power(jngl['LOGMDUST_DELOOZE_ERR'][flag_0]/jngl['LOGMDUST_DELOOZE'][flag_0],2))
+    
+    ax.errorbar(jngl['LOGMSTAR_MAGPHYS'][flag_0], y_val, y_val_err, jngl['LOGMSTAR_MAGPHYS_ERR'][flag_0], fmt='D', mfc='White', c='blue', ecolor='blue', label='JINGLE '+str(len(flag_0)), alpha=0.5)
+
+    ax.errorbar(jngl['LOGMSTAR_MAGPHYS'][flag_3], jngl['LOGMGAS'][flag_3], jngl['LOGMGAS_ERR'][flag_3], jngl['LOGMSTAR_MAGPHYS_ERR'][flag_3], fmt='o', c='Blue', ecolor='Blue', label='JINGLE '+str(len(flag_3)+len(flag_3_up)), alpha=0.75)
+    ax.errorbar(jngl['LOGMSTAR_MAGPHYS'][flag_3_up], jngl['LOGMGAS'][flag_3_up], jngl['LOGMGAS_ERR'][flag_3_up], jngl['LOGMSTAR_MAGPHYS_ERR'][flag_3_up], fmt='o', mfc='White', c='Blue', ecolor='Blue', alpha=0.75)
+    
+    if vertico == True:
+        vrtc = CF.src5[['L_LOGMH2','LOGMH2','LOGMH2_ERR','LOGMSTAR','LOGMSTAR_ERR','LOGMH1','LOGMH1_ERR']].copy()
+
+        vrtc_flag = vrtc.index[vrtc['L_LOGMH2'].isna()].tolist()
+        vrtc_flag_up = vrtc.index[vrtc['L_LOGMH2'].notna()].tolist()
+
+        vals = MF.error_add_logs(vrtc['LOGMH2'], vrtc['LOGMH2_ERR'], vrtc['LOGMH1'], vrtc['LOGMH1_ERR'])
+
+        y_val = vals[0]
+        y_val_err = vals[1]
+
+        ax.errorbar(vrtc['LOGMSTAR'][vrtc_flag], y_val[vrtc_flag], y_val_err[vrtc_flag], vrtc['LOGMSTAR_ERR'][vrtc_flag], fmt='o', c='Red', label='VERTICO '+str(len(vrtc_flag)+len(vrtc_flag_up)), alpha=0.75)
+        ax.errorbar(vrtc['LOGMSTAR'][vrtc_flag_up], y_val[vrtc_flag_up], y_val_err[vrtc_flag_up], vrtc['LOGMSTAR_ERR'][vrtc_flag_up], fmt='o', mfc='White', c='Red', alpha=0.75)
+    
+    if xcoldgass == True:
+        xcld = CF.src6[['LOGMSTAR','LOGMH2','LOGMH2_ERR','LOGMH2_LIM','LOGMH1','LOGMH1_ERR']].copy()
+
+        xcld_flag = xcld.index[(xcld['LOGMH2'].notna()) & (xcld['LOGMSTAR'].notna()) & (xcld['LOGMH1'].notna())].tolist()
+        xcld_flag_up = xcld.index[(xcld['LOGMH2_LIM'].notna()) & (xcld['LOGMSTAR'].notna()) & (xcld['LOGMH1'].notna())].tolist()
+
+        xcld.loc[xcld['LOGMH2'].isna(), 'LOGMH2'] = xcld['LOGMH2_LIM']
+
+        vals = MF.error_add_logs(xcld['LOGMH2'], xcld['LOGMH2_ERR'], xcld['LOGMH1'], xcld['LOGMH1_ERR'])
+
+        y_val = vals[0]
+        y_val_err = vals[1]
+
+        ax.errorbar(xcld['LOGMSTAR'][xcld_flag], y_val[xcld_flag], y_val_err[xcld_flag], fmt='s', c='Grey', label='XCOLDGASS '+str(len(xcld_flag)+len(xcld_flag_up)), alpha=0.75)
+        ax.errorbar(xcld['LOGMSTAR'][xcld_flag_up], y_val[xcld_flag_up], y_val_err[xcld_flag_up], fmt='s', mfc='White', c='Grey', alpha=0.75)
+
+    if heracles == True:
+        hrcl = CF.src7[['LOGMSTAR','LOGMH1','LOGMH2']].copy()
+
+        y_val = np.log10((np.power(10,hrcl['LOGMH1']) + np.power(10,hrcl['LOGMH2'])))
+
+        ax.errorbar(hrcl['LOGMSTAR'], y_val, fmt='h', c='Green', label='HERACLES '+str(len(y_val)), alpha=0.75)
+
+    ax.set_ylabel('$M_{Gas}$ [Log ($M_{\odot}$)]')      
+    ax.set_xlabel('$M_{Star}}$ [Log ($M_{\odot}$)]')
+
+    ax.set_xlim(8, 11.5)
+    ax.set_ylim(7, 11)
+
+    #formatting plot
+    box = ax.get_position()
+    ax.set_position([box.x0, box.y0, box.width * 0.8, box.height])
+    ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+
+    plt.show()
+
+
+#call on the main function when the script is executed
+if __name__ == '__main__':
+    JINGLE_total_gas()

@@ -30,3 +30,11 @@ def error_subtract(A, a, B, b):
     z = addErrors(a,b)
 
     return (Z,z)
+
+def error_add_logs(A,a,B,b):
+    Z = (np.power(10,A) + np.power(10,B))
+    z = (1/np.log(10)) * (addErrors(np.log(10)*np.power(10,A)*(a), np.log(10)*np.power(10,B)*(b))/Z)
+
+    Z = np.log10(Z)
+
+    return (Z,z)
