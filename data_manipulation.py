@@ -29,24 +29,13 @@ def JINGLE_main(src):
 
 def VERTICO_main(src):
     #convert the non log base dustpedia masses to log base for comparing to Brown.
-    src['LOGMSTAR_DP_ERR'] = (1/np.log(10)) * (src['LOGMSTAR_DP_ERR'] / src['LOGMSTAR_DP'])
-    src['LOGMSTAR_DP'] = np.log10(src['LOGMSTAR_DP'])
-
-    src['LOGSFR_DP_ERR'] = (1/np.log(10)) * (src['LOGSFR_DP_ERR'] / src['LOGSFR_DP'])
-    src['LOGSFR_DP'] = np.log10(src['LOGSFR_DP'])
-
-    src['LOGMDUST_DP_ERR'] = (1/np.log(10)) * (src['LOGMDUST_DP_ERR'] / src['LOGMDUST_DP'])
-    src['LOGMDUST_DP'] = np.log10(src['LOGMDUST_DP'])
+    src = CA.generate_std_error(src, src['LOGMH1'])
 
     return src
 
 def HERACLES_main(src):
-    #convert normal to log base 10 values.
-    src['MH2/MH1'] = np.log10(src['MH2/MH1'])
-    src['MH2/MSTAR'] = np.log10(src['MH2/MSTAR'])
-    src['MGAS/MSTAR'] = np.log10(src['MGAS/MSTAR'])
-    src['MG/MS_5L'] = np.log10(src['MG/MS_5L'])
-    src['LOGSFR'] = np.log10(src['LOGSFR'])
+    #nothing yet
+    
 
     return src
 

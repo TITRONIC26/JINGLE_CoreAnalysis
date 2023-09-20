@@ -114,65 +114,9 @@ def gas_plots(src, vertico=False):
 
     return
 
-def GalacticDensity_gas_plots(src, sSFR=False):
-    #'ID','RA','DE','Vel','S/N','L_LOGMH2','LOGMH2','LOGMH2_ERR','LOGMSTAR','LOGMSTAR_ERR','LOGMH1','LOGMH1_ERR'
-    vert = CF.src5.copy()
-    verDP = CF.src4[['ID','LOGSFR_DP','LOGSFR_DP_ERR']].copy()
-
-    ver = pd.merge(vert, verDP, on='ID')
-
-    FF.print_full(ver)
-
-    #'LOGMSTAR_MAGPHYS','LOGMSTAR_MAGPHYS_ERR','LOGSFR_MAGPHYS','LOGSFR_MAGPHYS_ERR','LOGMH2_RYAN','LOGMH1_MATT','LOGMH1_MATT_ERR','H1_FLAG','LOGMH2_RYAN_ERR','LOGMGAS','LOGMGAS_ERR','MGAS_FLAG'
-
-    #plot of sfr vs stellar mass
-    fig, ax = plt.subplots()
-
-    index_up = src.index[(src['H1_FLAG'] == 0)].tolist()
-    index = src.index[(src['H1_FLAG'] == 1)].tolist()
-
-    lenth = str(len(index))
-
-    if sSFR == True:
-        vals = MF.error_subtract(src['LOGMH1_MATT'], src['LOGMH1_MATT_ERR'], src['LOGMSTAR_MAGPHYS'], src['LOGMSTAR_MAGPHYS_ERR'])
-        values = vals[0]
-        value_err = vals[1]
-    else:
-        values = src['LOGMH1_MATT']
-        value_err = src['LOGMH1_MATT_ERR']
-
-    ax.errorbar(src['LOGMSTAR_MAGPHYS'][index], values[index], value_err[index], src['LOGMSTAR_MAGPHYS_ERR'][index], fmt='o', c='Blue', ecolor='Blue', label='JINGLE '+lenth, alpha=0.75)
-    ax.errorbar(src['LOGMSTAR_MAGPHYS'][index_up], values[index_up], value_err[index_up], src['LOGMSTAR_MAGPHYS_ERR'][index_up], fmt='o', mfc='white', c='Blue', ecolor='Blue')
-    LM.curvefitting(src['LOGMSTAR_MAGPHYS'][index], values[index], axs=ax, color='Blue')
-
-    if sSFR == True:
-        ver_vals = MF.error_subtract(ver['LOGMH1'], ver['LOGMH1_ERR'], ver['LOGMSTAR'], ver['LOGMSTAR_ERR'])
-        ver_values = ver_vals[0]
-        ver_value_err = ver_vals[1]
-    else:
-        ver_values = ver['LOGMH1']
-        ver_value_err = ver['LOGMH1_ERR']
-
-    ax.errorbar(ver['LOGMSTAR'], ver_values, ver_value_err, ver['LOGMSTAR_ERR'], fmt='s', c='Grey', ecolor='Grey', label='VERTICO', alpha=0.75)
-    flag = ver.index[(ver['LOGMSTAR'].notnull()) & (ver['LOGMH1'].notnull())].tolist()
-    LM.curvefitting(ver['LOGMSTAR'][flag], ver_values[flag], axs=ax, color='Black')
-
-    ax.set_ylabel('$M_{HI}$/$M_{star}$ [Log ()]')
-    ax.set_xlabel('$M_{star}}$ [Log ($M_{\odot}$)]')
-
-    ax.set_xlim(8.75, 11.5)
-    ax.set_ylim(-3.5, 1)
-
-    #formatting plot
-    box = ax.get_position()
-    ax.set_position([box.x0, box.y0, box.width * 0.8, box.height])
-    ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
-
-    plt.show()
-
 def GalacticDensity_field_plots(src):
     xcg = CF.src6[['LOGMSTAR','LOGMH2','LOGMH2_LIM','LOGMH1','LOGSFR']].copy()
-    her = CF.src7[['MH2/MH1','MH2/MSTAR','MGAS/MSTAR','LOGMSTAR','LOGMH1','LOGMH2','LOGSFR']].copy()
+    her = CF.src7[['LOGMSTAR','LOGMSTAR_ERR','LOGSFR','LOGSFR_ERR','LOGMH2','LOGMH2_ERR','LOGMH1','LOGMH1_ERR']].copy()
 
     xcg['LOGMGAS'] = np.log10(np.power(10,xcg['LOGMH1'])+np.power(10,xcg['LOGMH2']))
     xcg['LOGMGAS_LIM'] = np.log10(np.power(10,xcg['LOGMH1'])+np.power(10,xcg['LOGMH2_LIM']))
@@ -275,18 +219,15 @@ def JINGLE_total_gas(vertico=True, xcoldgass=True, heracles=True):
     ax.errorbar(jngl['LOGMSTAR_MAGPHYS'][flag_3_up], jngl['LOGMGAS'][flag_3_up], jngl['LOGMGAS_ERR'][flag_3_up], jngl['LOGMSTAR_MAGPHYS_ERR'][flag_3_up], fmt='o', mfc='White', c='Blue', ecolor='Blue', alpha=0.75)
     
     if vertico == True:
-        vrtc = CF.src5[['L_LOGMH2','LOGMH2','LOGMH2_ERR','LOGMSTAR','LOGMSTAR_ERR','LOGMH1','LOGMH1_ERR']].copy()
-
-        vrtc_flag = vrtc.index[vrtc['L_LOGMH2'].isna()].tolist()
-        vrtc_flag_up = vrtc.index[vrtc['L_LOGMH2'].notna()].tolist()
+        vrtc = CF.src5[['LOGMH1','LOGMSTAR','LOGMSTAR_ERR','LOGMH2','LOGMH2_ERR']].copy()
+        vrtc = DM.VERTICO_main(vrtc)
 
         vals = MF.error_add_logs(vrtc['LOGMH2'], vrtc['LOGMH2_ERR'], vrtc['LOGMH1'], vrtc['LOGMH1_ERR'])
 
         y_val = vals[0]
         y_val_err = vals[1]
 
-        ax.errorbar(vrtc['LOGMSTAR'][vrtc_flag], y_val[vrtc_flag], y_val_err[vrtc_flag], vrtc['LOGMSTAR_ERR'][vrtc_flag], fmt='o', c='Red', label='VERTICO '+str(len(vrtc_flag)+len(vrtc_flag_up)), alpha=0.75)
-        ax.errorbar(vrtc['LOGMSTAR'][vrtc_flag_up], y_val[vrtc_flag_up], y_val_err[vrtc_flag_up], vrtc['LOGMSTAR_ERR'][vrtc_flag_up], fmt='o', mfc='White', c='Red', alpha=0.75)
+        ax.errorbar(vrtc['LOGMSTAR'], y_val, y_val_err, vrtc['LOGMSTAR_ERR'], fmt='o', c='Red', label='VERTICO '+str(len(y_val)), alpha=0.75)
     
     if xcoldgass == True:
         xcld = CF.src6[['LOGMSTAR','LOGMH2','LOGMH2_ERR','LOGMH2_LIM','LOGMH1','LOGMH1_ERR']].copy()

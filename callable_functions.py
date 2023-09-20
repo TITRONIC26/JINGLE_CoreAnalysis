@@ -28,20 +28,20 @@ import formatting_functions as FF
 src1 = GD.get_data(GD.JINGLE_GALAXY)
 src2 = GD.get_data(GD.JINGLE_FLUX)
 src3 = GD.get_data(GD.JINGLE_TEMPEL)
-src4 = GD.get_data(GD.VERTICO_DP)
+#src4 = GD.get_data(GD.VERTICO_DP)
 src5 = GD.get_data(GD.VERTICO)
 src6 = GD.get_data(GD.XCOLD_GASS)
 src7 = GD.get_data(GD.HERACLES)
 
 #fix src data
 src1 = DM.JINGLE_main(src1)
-src4 = DM.VERTICO_main(src4)
+src5 = DM.VERTICO_main(src5)
 src6 = DM.XCG_main(src6)
 src7 = DM.HERACLES_main(src7)
 
 def main():
-    #FF.print_full(src7)
-    comp_plots()
+    FF.print_full(src6)
+    #comp_plots()
 
 def comp_plots():
     df1 = src1[['LOGMSTAR_MAGPHYS','LOGMSTAR_MAGPHYS_ERR','LOGSFR_MAGPHYS','LOGSFR_MAGPHYS_ERR','LOGMH2_RYAN','LOGMH1_MATT','LOGMH1_MATT_ERR','H1_FLAG','LOGMH2_RYAN_ERR','LOGMGAS','LOGMGAS_ERR','MGAS_FLAG','JINGLEID']].copy()

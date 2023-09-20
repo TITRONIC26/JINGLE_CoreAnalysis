@@ -12,7 +12,7 @@ JINGLE_TEMPEL = r"C:\Users\jsmes\OneDrive\Documents\Temp\Thesis\Data\Combined Da
 VERTICO_DP = r"C:\Users\jsmes\OneDrive\Documents\Temp\Thesis\Data\Combined Datasets\VERTICO_DP.csv"
 XCOLD_GASS = r"C:\Users\jsmes\OneDrive\Documents\Temp\Thesis\Data\Combined Datasets\xCOLD_GASS.csv"
 VERTICO = r"C:\Users\jsmes\OneDrive\Documents\Temp\Thesis\Data\Combined Datasets\VERTICO.csv"
-HERACLES = r"C:\Users\jsmes\OneDrive\Documents\Temp\Thesis\Data\Combined Datasets\HERACLES_THINGS.csv"
+HERACLES = r"C:\Users\jsmes\OneDrive\Documents\Temp\Thesis\Data\Combined Datasets\HERACLES.csv"
 
 #minor file locations go here
 RYAN_ISM = r"c:\Users\jsmes\OneDrive\Documents\Temp\Thesis\Data\Special_Datasets\Ryan_ISM_Masses.csv"
@@ -39,9 +39,9 @@ V_header = ['ID','RA','DE','Vel','S/N','L_LOGMH2','LOGMH2','LOGMH2_ERR','LOGSFR_
 
 XCG_header = ['ID','RA','DEC','z','LOGMSTAR','LOGSFR','LOGSFR_ERR','Z_PP04_O3N2','LOGMH2','LOGMH2_ERR','LOGMH2_LIM','LOGMH1','LOGMH1_Q']
 
-VERT_header = ['ID','RA','DE','Vel','S/N','L_LOGMH2','LOGMH2','LOGMH2_ERR','LOGMSTAR','LOGMSTAR_ERR','LOGMH1','LOGMH1_ERR']
+VERT_header = ['ID','RA','DEC','z','LOGMH1','LOGMSTAR','LOGMSTAR_ERR','LOGSFR','LOGSFR_ERR','LOGMH2','LOGMH2_ERR']
 
-HER_header = ['ID','MH2/MH1','MH2/MSTAR','MGAS/MSTAR','MG/MS_5L','LOGMSTAR','LOGMH1','LOGMH2','LOGSFR']
+HER_header = ['ID','RA','DEC','Vel','z','LOGMSTAR','LOGMSTAR_ERR','LOGSFR','LOGSFR_ERR','LOGMH2','LOGMH2_ERR','LOGMH1','LOGMH1_ERR']
 
 #functions go here
 def get_header(file):
