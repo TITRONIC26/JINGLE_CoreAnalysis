@@ -158,15 +158,17 @@ def dustMass_comp():
     c = 0
 
     for n in lst:
-        avg = (src['LOGMGAS'] - n).mean()
+        avg = (((src['LOGMGAS'][flag_3]-n[flag_3])).mean() + ((src['LOGMGAS'][flag_3_up]-n[flag_3_up])).mean())/2
 
-        ax[c].bar(src['LOGMSTAR_MAGPHYS'], src['LOGMGAS'] - n, width=0.01)
+        ax[c].scatter(src['LOGMSTAR_MAGPHYS'][flag_3], (src['LOGMGAS'] - n)[flag_3], s=15, alpha = 0.75, marker='o', color='Blue')
+        ax[c].errorbar(src['LOGMSTAR_MAGPHYS'][flag_3_up], (src['LOGMGAS'] - n)[flag_3_up], markersize=5, alpha = 0.75, fmt='o', mfc='White', c='Blue')
         ax[c].hlines(avg, xmin = 8.5, xmax = 11.5, linestyle='--', color='Black', label=str("{0:.5g}".format(avg)))
-        ax[c].set_ylabel(names[c])
+        ax[c].set_ylabel('Log(JINGLE) - Log('+str(names[c])+')')
         ax[c].set_xlim(8.75, 11.35)
         ax[c].legend()
         c+=1
 
+    plt.xlabel('$M_{Star}}$ [Log ($M_{\odot}$)]')
     plt.show()
 
     
