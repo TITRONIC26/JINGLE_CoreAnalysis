@@ -25,8 +25,8 @@ import linmixer as LM
 import formatting_functions as FF
 
 #get data frames
-df_ryan = GD.get_data(GD.RYAN_ISM, keep=True)
-df_delooze = GD.get_data(GD.DELOOZE, keep=True)
+#df_ryan = GD.get_data(GD.RYAN_ISM, keep=True)
+#df_delooze = GD.get_data(GD.DELOOZE, keep=True)
 
 def ryan_delooze_dustMasses_comparison():
     src1 = df_ryan.copy()
