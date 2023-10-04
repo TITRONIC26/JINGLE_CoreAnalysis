@@ -6,13 +6,21 @@ Code used explicitly for collecting and processing the data stored locally
 import pandas as pd
 
 #file locations go here
-JINGLE_FLUX = r"c:\Users\spart\OneDrive\Documents\McMaster\Year 5\4IS3\Data\Combined Datasets\JINGLE_FluxMeasurements.csv"
-JINGLE_GALAXY = r"c:\Users\spart\OneDrive\Documents\McMaster\Year 5\4IS3\Data\Combined Datasets\JINGLE_GalaxyProperties.csv"
-JINGLE_TEMPEL = r"c:\Users\spart\OneDrive\Documents\McMaster\Year 5\4IS3\Data\Combined Datasets\JINGLE_TEMPEL.csv"
-VERTICO_DP = r"c:\Users\spart\OneDrive\Documents\McMaster\Year 5\4IS3\Data\Combined Datasets\VERTICO_DP.csv"
-XCOLD_GASS = r"c:\Users\spart\OneDrive\Documents\McMaster\Year 5\4IS3\Data\Combined Datasets\xCOLD_GASS.csv"
-VERTICO = r"c:\Users\spart\OneDrive\Documents\McMaster\Year 5\4IS3\Data\Combined Datasets\VERTICO.csv"
-HERACLES = r"C:\Users\spart\OneDrive\Documents\McMaster\Year 5\4IS3\Data\Combined Datasets\HERACLES.csv"
+#JINGLE_FLUX = r"c:\Users\spart\OneDrive\Documents\McMaster\Year 5\4IS3\Data\Combined Datasets\JINGLE_FluxMeasurements.csv"
+#JINGLE_GALAXY = r"c:\Users\spart\OneDrive\Documents\McMaster\Year 5\4IS3\Data\Combined Datasets\JINGLE_GalaxyProperties.csv"
+#JINGLE_TEMPEL = r"c:\Users\spart\OneDrive\Documents\McMaster\Year 5\4IS3\Data\Combined Datasets\JINGLE_TEMPEL.csv"
+#VERTICO_DP = r"c:\Users\spart\OneDrive\Documents\McMaster\Year 5\4IS3\Data\Combined Datasets\VERTICO_DP.csv"
+#XCOLD_GASS = r"c:\Users\spart\OneDrive\Documents\McMaster\Year 5\4IS3\Data\Combined Datasets\xCOLD_GASS.csv"
+#VERTICO = r"c:\Users\spart\OneDrive\Documents\McMaster\Year 5\4IS3\Data\Combined Datasets\VERTICO.csv"
+#HERACLES = r"C:\Users\spart\OneDrive\Documents\McMaster\Year 5\4IS3\Data\Combined Datasets\HERACLES.csv"
+
+JINGLE_FLUX = r"C:\Users\jsmes\OneDrive\Documents\Temp\Thesis\Data\Combined Datasets\JINGLE_FluxMeasurements.csv"
+JINGLE_GALAXY = r"C:\Users\jsmes\OneDrive\Documents\Temp\Thesis\Data\Combined Datasets\JINGLE_GalaxyProperties.csv"
+JINGLE_TEMPEL = r"C:\Users\jsmes\OneDrive\Documents\Temp\Thesis\Data\Combined Datasets\JINGLE_TEMPEL.csv"
+VERTICO_DP = r"C:\Users\jsmes\OneDrive\Documents\Temp\Thesis\Data\Combined Datasets\VERTICO_DP.csv"
+XCOLD_GASS = r"C:\Users\jsmes\OneDrive\Documents\Temp\Thesis\Data\Combined Datasets\xCOLD_GASS.csv"
+VERTICO = r"C:\Users\jsmes\OneDrive\Documents\Temp\Thesis\Data\Combined Datasets\VERTICO.csv"
+HERACLES = r"C:\Users\jsmes\OneDrive\Documents\Temp\Thesis\Data\Combined Datasets\HERACLES.csv"
 
 #minor file locations go here
 RYAN_ISM = r"c:\Users\jsmes\OneDrive\Documents\Temp\Thesis\Data\Special_Datasets\Ryan_ISM_Masses.csv"
