@@ -15,6 +15,7 @@ import plotter as PLT
 #essential scripts
 import gather_data as GD
 import constants as C
+import Milestone3 as M3
 
 #data analysis and manipulation
 import core_analysis as CA
@@ -40,15 +41,15 @@ src6 = DM.XCG_main(src6)
 src7 = DM.HERACLES_main(src7)
 
 def main():
-    FF.print_full(src1)
+    #FF.print_full(src1)
     #FF.print_full(src2)
     #FF.print_full(src3)
     #FF.print_full(src4)
-    FF.print_full(src5)
-    FF.print_full(src6)
-    FF.print_full(src7)
+    #FF.print_full(src5)
+    #FF.print_full(src6)
+    #FF.print_full(src7)
 
-    #comp_plots()
+    environments()
 
 def comp_plots():
     df1 = src1[['LOGMSTAR_MAGPHYS','LOGMSTAR_MAGPHYS_ERR','LOGSFR_MAGPHYS','LOGSFR_MAGPHYS_ERR','LOGMH2_RYAN','LOGMH1_MATT','LOGMH1_MATT_ERR','H1_FLAG','LOGMH2_RYAN_ERR','LOGMGAS','LOGMGAS_ERR','MGAS_FLAG','JINGLEID']].copy()
@@ -67,6 +68,25 @@ def comp_plots():
             print('')
         elif key == 'Medium-Density':
             PLT.GalacticDensity_field_plots(group)
+
+def environments():
+    df1 = src1.copy()
+    df2 = src3[['JINGLEID','NGAL','LOGMHALO_TEMPEL']].copy()
+    df3 = src2[['JINGLEID','IDNUM']].copy()
+
+    src = pd.merge(df1, df2, on='JINGLEID')
+    src = pd.merge(src, df3, on='JINGLEID')
+
+    src = CA.Group_By_Dens(src)
+    grouper = src.groupby('GALACTIC_DENS')
+
+    for key, group in grouper:
+        FF.print_full(group)
+        print(len(group['GALACTIC_DENS']))
+        print(key)
+        M3.main(group)
+
+
 
 
 

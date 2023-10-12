@@ -14,7 +14,6 @@ import core_analysis as CA
 def JINGLE_main(src):
     #replace with null values
     src.loc[src['Z_PP04_O3N2'] < 0, 'Z_PP04_O3N2'] = np.nan
-    src.loc[src['LOGMHALO_TEMPEL'] < 0, 'LOGMHALO_TEMPEL'] = np.nan
     src.loc[src['LOGMH2_RYAN'] < 0.1, 'LOGMH2_RYAN'] = np.nan
     src.loc[src['H1_FLAG'] < 0, ['LOGMH1_MATT','LOGMH1_MATT_ERR']] = np.nan
 
