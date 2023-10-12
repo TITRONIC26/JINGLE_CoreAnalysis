@@ -34,7 +34,7 @@ JF_header = ['JINGLEID','IDNUM','FLAG','SCUBA2_850_PeakSNR','SCUBA2_850_Flux','S
 JG_header = ['JINGLEID','RA','DEC','z','z_ERR','Z_PP04_O3N2','LOGMSTAR_MAGPHYS',
              'LOGMSTAR_MAGPHYS_ERR','LOGSFR_MAGPHYS','LOGSFR_MAGPHYS_ERR','LOGMHALO_TEMPEL',
              'GROUPRANK_TEMPEL','GROUPCLASS','LOGMDUST_DELOOZE','dex-','dex+','LOGMH2_RYAN',
-             'LOGMH1_MATT','LOGMH1_MATT_ERR','H1_FLAG']
+             'LOGMH1_MATT','LOGMH1_MATT_ERR','H1_FLAG','LOGMH2_TING','LOGMH1_TING']
 
 JT_header = ['JINGLEID','GROUPID','NGAL','Rank','Dist.g','pE','pS0','pSa','pSc','RAgroup',
              'DEgroup','zgroup','sig.v','Rvir','Rmax','LOGMHALO_TEMPEL','LOGMHALO_TEMPEL_ERR','Den1','Den2','Den4',

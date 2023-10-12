@@ -41,8 +41,8 @@ src7 = DM.HERACLES_main(src7)
 
 def main():
     FF.print_full(src1)
-    FF.print_full(src2)
-    FF.print_full(src3)
+    #FF.print_full(src2)
+    #FF.print_full(src3)
     #FF.print_full(src4)
     FF.print_full(src5)
     FF.print_full(src6)

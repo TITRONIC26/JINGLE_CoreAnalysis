@@ -83,14 +83,53 @@ def generate_std_error(src, column):
     return src
 
 def find_Mgas(src):
-    vals = MF.error_add(np.power(10,src['LOGMH1_MATT']), np.log(10)*np.power(10,src['LOGMH1_MATT'])*(src['LOGMH1_MATT_ERR']), np.power(10,src['LOGMH2_RYAN']), np.log(10)*np.power(10,src['LOGMH2_RYAN'])*(src['LOGMH2_RYAN_ERR']))
+    src['LOGMH1'] = src['LOGMH1_MATT']
+    src['LOGMH2'] = src['LOGMH2_RYAN']
+
+    src.loc[src['LOGMH1_TING'] == 0, 'LOGMH1_TING'] = np.nan
+    src.loc[src['LOGMH2_TING'] == 0, 'LOGMH2'] = np.nan
+
+    src.loc[pd.isnull(src['LOGMH1']), 'LOGMH1'] = src['LOGMH1_TING']
+    src.loc[pd.isnull(src['LOGMH2']), 'LOGMH2'] = src['LOGMH2_TING']
+
+    vals = MF.error_add(np.power(10,src['LOGMH1']), np.log(10)*np.power(10,src['LOGMH1'])*(src['LOGMH1_MATT_ERR']), np.power(10,src['LOGMH2']), np.log(10)*np.power(10,src['LOGMH2'])*(src['LOGMH2_RYAN_ERR']))
     src['LOGMGAS'] = np.log10(vals[0])
     src['LOGMGAS_ERR'] = (1/np.log(10)) * ((vals[1])/(vals[0]))
     src['MGAS_FLAG'] = 0
 
-    src.loc[(pd.notnull(src['LOGMH1_MATT'])) & (pd.isnull(src['LOGMH2_RYAN'])), 'MGAS_FLAG'] = 1
-    src.loc[(pd.isnull(src['LOGMH1_MATT'])) & (pd.notnull(src['LOGMH2_RYAN'])), 'MGAS_FLAG'] = 2
-    src.loc[(pd.notnull(src['LOGMH1_MATT'])) & (pd.notnull(src['LOGMH2_RYAN'])), 'MGAS_FLAG'] = 3
+    src.loc[(pd.notnull(src['LOGMH1'])) & (pd.notnull(src['LOGMH2'])), 'MGAS_FLAG'] = 3
+
+    flag = src.index[(src['LOGMGAS'].notnull())].tolist()
+    flag_0 = src.index[(src['MGAS_FLAG'] != 3)].tolist()
+
+    G2DR = (src['LOGMGAS'][flag] - src['LOGMDUST_DELOOZE'][flag]).mean()
+    G2DR_ERR = (np.sqrt(np.power(src['LOGMGAS_ERR'][flag], 2) + np.power(src['LOGMDUST_DELOOZE_ERR'][flag], 2))).mean()
+
+    y_val = G2DR + src['LOGMDUST_DELOOZE']
+    y_val_err = y_val * np.sqrt(mt.pow(G2DR_ERR/G2DR,2) + np.power(src['LOGMDUST_DELOOZE_ERR']/src['LOGMDUST_DELOOZE'],2))
+
+    src.loc[src['MGAS_FLAG'] != 3, 'MGAS_FLAG'] = 4
+    src.loc[src['MGAS_FLAG'] == 4, 'LOGMGAS'] = y_val
+    src.loc[src['MGAS_FLAG'] == 4, 'LOGMGAS_ERR'] = y_val_err
+
+    src.loc[pd.isnull(src['LOGMGAS']), 'MGAS_FLAG'] = 5
+    src.loc[(pd.notnull(src['LOGMH1'])) & (pd.isnull(src['LOGMH2'])), 'MGAS_FLAG'] = 1
+    src.loc[(pd.isnull(src['LOGMH1'])) & (pd.notnull(src['LOGMH2'])), 'MGAS_FLAG'] = 2
+    src.loc[(pd.isnull(src['LOGMH1_MATT'])) & (pd.isnull(src['LOGMH2_RYAN'])) & (src['MGAS_FLAG'] == 3), 'MGAS_FLAG'] = 6
+
+    h2s = np.log10(np.power(10,src['LOGMGAS']) - np.power(10,src['LOGMH1']))
+    h1s = np.log10(np.power(10,src['LOGMGAS']) - np.power(10,src['LOGMH2']))
+
+    src.loc[pd.isnull(src['LOGMH1']), 'LOGMH1'] = src['LOGMH1'] + h1s
+    src.loc[pd.isnull(src['LOGMH2']), 'LOGMH2'] = src['LOGMH2'] + h2s
+
+    #MGAS_FLAGS
+    #1 == H1 detected
+    #2 == H2 detected
+    #3 == Both H1 and H2 detected by Ryan and Matt
+    #4 == Dust Derived
+    #5 == Non detection
+    #6 == Detected by Ting
 
     return src
 
