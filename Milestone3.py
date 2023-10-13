@@ -167,13 +167,12 @@ def weighting3(col,y1,y2,x1,x2):
 
     return (xs, ave, ave_e, med)
 
-def MH1(jngl, show=False):
+def MH1(jngl, xcg, show=False):
     #['LOGMSTAR_MAGPHYS','LOGMSTAR_MAGPHYS_ERR','LOGSFR_MAGPHYS','LOGSFR_MAGPHYS_ERR','LOGMDUST_DELOOZE','LOGMH2_RYAN','LOGMH1_MATT','H1_FLAG','LOGMGAS','LOGMGAS_ERR','MGAS_FLAG']
     #FF.print_full(jngl)
     j = jngl.index[jngl['H1_FLAG']==1].tolist()
     jup = jngl.index[(jngl['H1_FLAG']==0)].tolist()
 
-    xcg = CF.src6.copy()
     #['LOGMSTAR','LOGSFR','LOGSFR_ERR','LOGMH1','H1_FLAG','LOGMH2','LOGMH2_ERR','LOGMH2_LIM','GROUPID','ENV_CODE','NGAL','LOGMH']
     #FF.print_full(xcg)
     x = xcg.index[xcg['H1_FLAG']!=99].tolist()
@@ -202,12 +201,12 @@ def MH1(jngl, show=False):
     size = len(Mh1.index[jngl['LOGMH1'].notnull()].tolist())
     ax.errorbar(Ms[j], Mh1[j]-Ms[j], markersize=5, fmt='o', c=cc[0], ecolor='Grey', alpha=0.5, zorder=15, label=str(size)+' - JINGLE')
     ax.errorbar(Ms[jup], Mh1[jup]-Ms[jup], markersize=5, fmt='v', c=cc[0], ecolor='Grey', zorder=15)
+    
+    size1 = len(xcg.index[xcg['LOGMH1'].notnull()].tolist())
+    ax.errorbar(xcg['LOGMSTAR'][x], xcg['LOGMH1'][x]-xcg['LOGMSTAR'][x], markersize=5, fmt='o', c=cc[1], ecolor='Grey', alpha=0.5, zorder=10, label=str(size1)+' - xCOLDGASS')
+    ax.errorbar(xcg['LOGMSTAR'][xup], xcg['LOGMH1'][xup]-xcg['LOGMSTAR'][xup], markersize=5, fmt='v', c=cc[1], ecolor='Grey', zorder=10)
 
     if show == True:
-        size1 = len(xcg.index[xcg['LOGMH1'].notnull()].tolist())
-        ax.errorbar(xcg['LOGMSTAR'][x], xcg['LOGMH1'][x]-xcg['LOGMSTAR'][x], markersize=5, fmt='o', c=cc[1], ecolor='Grey', alpha=0.5, zorder=10, label=str(size1)+' - xCOLDGASS')
-        ax.errorbar(xcg['LOGMSTAR'][xup], xcg['LOGMH1'][xup]-xcg['LOGMSTAR'][xup], markersize=5, fmt='v', c=cc[1], ecolor='Grey', zorder=10)
-
         size2 = len(vrt.index[vrt['LOGMH1'].notnull()].tolist())
         ax.errorbar(vrt['LOGMSTAR'], vrt['LOGMH1']-vrt['LOGMSTAR'], markersize=5, fmt='o', c=cc[2], ecolor='Grey', alpha=0.5, zorder=20, label=str(size2)+' - VERTICO')
         
@@ -235,11 +234,11 @@ def MH1(jngl, show=False):
     ax.errorbar(sfr[j]-Ms[j], Mh1[j]-Ms[j], markersize=5, fmt='o', c=cc[0], ecolor='Grey', alpha=0.5, zorder=15, label=str(size)+' - JINGLE')
     ax.errorbar(sfr[jup]-Ms[jup], Mh1[jup]-Ms[jup], markersize=5, fmt='v', c=cc[0], ecolor='Grey', zorder=15)
 
+    size1 = len(xcg.index[xcg['LOGMH1'].notnull()].tolist())
+    ax.errorbar(xcg['LOGSFR'][x]-xcg['LOGMSTAR'][x], xcg['LOGMH1'][x]-xcg['LOGMSTAR'][x], markersize=5, fmt='o', c=cc[1], ecolor='Grey', alpha=0.5, zorder=10, label=str(size1)+' - xCOLDGASS')
+    ax.errorbar(xcg['LOGSFR'][xup]-xcg['LOGMSTAR'][xup], xcg['LOGMH1'][xup]-xcg['LOGMSTAR'][xup], markersize=5, fmt='v', c=cc[1], ecolor='Grey', zorder=10)
+        
     if show == True:
-        size1 = len(xcg.index[xcg['LOGMH1'].notnull()].tolist())
-        ax.errorbar(xcg['LOGSFR'][x]-xcg['LOGMSTAR'][x], xcg['LOGMH1'][x]-xcg['LOGMSTAR'][x], markersize=5, fmt='o', c=cc[1], ecolor='Grey', alpha=0.5, zorder=10, label=str(size1)+' - xCOLDGASS')
-        ax.errorbar(xcg['LOGSFR'][xup]-xcg['LOGMSTAR'][xup], xcg['LOGMH1'][xup]-xcg['LOGMSTAR'][xup], markersize=5, fmt='v', c=cc[1], ecolor='Grey', zorder=10)
-
         size2 = len(vrt.index[vrt['LOGMH1'].notnull()].tolist())
         ax.errorbar(vrt['LOGSFR']-vrt['LOGMSTAR'], vrt['LOGMH1']-vrt['LOGMSTAR'], markersize=5, fmt='o', c=cc[2], ecolor='Grey', alpha=0.5, zorder=20, label=str(size2)+' - VERTICO')
         
@@ -259,11 +258,10 @@ def MH1(jngl, show=False):
 
     plt.show()
 
-def MH2(jngl, show=False):
+def MH2(jngl, xcg, show=False):
     #['LOGMSTAR_MAGPHYS','LOGMSTAR_MAGPHYS_ERR','LOGSFR_MAGPHYS','LOGSFR_MAGPHYS_ERR','LOGMDUST_DELOOZE','LOGMH2_RYAN','LOGMH1_MATT',,'H1_FLAG','LOGMGAS','LOGMGAS_ERR','MGAS_FLAG']
     #FF.print_full(jngl)
 
-    xcg = CF.src6.copy()
     #['LOGMSTAR','LOGSFR','LOGSFR_ERR','LOGMH1','H1_FLAG','LOGMH2','LOGMH2_ERR','LOGMH2_LIM','GROUPID','ENV_CODE','NGAL','LOGMH']
     #FF.print_full(xcg)
     x = xcg.index[xcg['LOGMH2'].notnull()].tolist()
@@ -292,11 +290,11 @@ def MH2(jngl, show=False):
     size = len(Mh2.index[jngl['LOGMH2'].notnull()].tolist())
     ax.errorbar(Ms, Mh2-Ms, markersize=5, fmt='o', c=cc[0], ecolor='Grey', alpha=0.5, zorder=15, label=str(size)+' - JINGLE')
     
-    if show == True:
-        size1 = len(xcg.index[xcg['LOGMH2'].notnull()].tolist()) + len(xcg.index[xcg['LOGMH2_LIM'].notnull()].tolist())
-        ax.errorbar(xcg['LOGMSTAR'][x], xcg['LOGMH2'][x]-xcg['LOGMSTAR'][x], markersize=5, fmt='o', c=cc[1], ecolor='Grey', alpha=0.5, zorder=10, label=str(size1)+' - xCOLDGASS')
-        ax.errorbar(xcg['LOGMSTAR'][xup], xcg['LOGMH2_LIM'][xup]-xcg['LOGMSTAR'][xup], markersize=5, fmt='v', c=cc[1], ecolor='Grey', zorder=10)
+    size1 = len(xcg.index[xcg['LOGMH2'].notnull()].tolist()) + len(xcg.index[xcg['LOGMH2_LIM'].notnull()].tolist())
+    ax.errorbar(xcg['LOGMSTAR'][x], xcg['LOGMH2'][x]-xcg['LOGMSTAR'][x], markersize=5, fmt='o', c=cc[1], ecolor='Grey', alpha=0.5, zorder=10, label=str(size1)+' - xCOLDGASS')
+    ax.errorbar(xcg['LOGMSTAR'][xup], xcg['LOGMH2_LIM'][xup]-xcg['LOGMSTAR'][xup], markersize=5, fmt='v', c=cc[1], ecolor='Grey', zorder=10)
 
+    if show == True:
         size2 = len(vrt.index[vrt['LOGMH2'].notnull()].tolist())
         ax.errorbar(vrt['LOGMSTAR'], vrt['LOGMH2']-vrt['LOGMSTAR'], markersize=5, fmt='o', c=cc[2], ecolor='Grey', alpha=0.5, zorder=20, label=str(size2)+' - VERTICO')
         
@@ -323,11 +321,11 @@ def MH2(jngl, show=False):
     size = len(Mh2.index[jngl['LOGMH2'].notnull()].tolist())
     ax.errorbar(sfr-Ms, Mh2-Ms, markersize=5, fmt='o', c=cc[0], ecolor='Grey', alpha=0.5, zorder=15, label=str(size)+' - JINGLE')
 
-    if show == True:
-        size1 = len(xcg.index[xcg['LOGMH2'].notnull()].tolist()) + len(xcg.index[xcg['LOGMH2_LIM'].notnull()].tolist())
-        ax.errorbar(xcg['LOGSFR'][x]-xcg['LOGMSTAR'][x], xcg['LOGMH2'][x]-xcg['LOGMSTAR'][x], markersize=5, fmt='o', c=cc[1], ecolor='Grey', alpha=0.5, zorder=10, label=str(size1)+' - xCOLDGASS')
-        ax.errorbar(xcg['LOGSFR'][xup]-xcg['LOGMSTAR'][xup], xcg['LOGMH2_LIM'][xup]-xcg['LOGMSTAR'][xup], markersize=5, fmt='v', c=cc[1], ecolor='Grey', zorder=10)
+    size1 = len(xcg.index[xcg['LOGMH2'].notnull()].tolist()) + len(xcg.index[xcg['LOGMH2_LIM'].notnull()].tolist())
+    ax.errorbar(xcg['LOGSFR'][x]-xcg['LOGMSTAR'][x], xcg['LOGMH2'][x]-xcg['LOGMSTAR'][x], markersize=5, fmt='o', c=cc[1], ecolor='Grey', alpha=0.5, zorder=10, label=str(size1)+' - xCOLDGASS')
+    ax.errorbar(xcg['LOGSFR'][xup]-xcg['LOGMSTAR'][xup], xcg['LOGMH2_LIM'][xup]-xcg['LOGMSTAR'][xup], markersize=5, fmt='v', c=cc[1], ecolor='Grey', zorder=10)
 
+    if show == True:
         size2 = len(vrt.index[vrt['LOGMH2'].notnull()].tolist())
         ax.errorbar(vrt['LOGSFR']-vrt['LOGMSTAR'], vrt['LOGMH2']-vrt['LOGMSTAR'], markersize=5, fmt='o', c=cc[2], ecolor='Grey', alpha=0.5, zorder=20, label=str(size2)+' - VERTICO')
         
@@ -347,13 +345,12 @@ def MH2(jngl, show=False):
 
     plt.show()
 
-def MH1MH2(jngl, show=False):
+def MH1MH2(jngl, xcg, show=False):
     #['LOGMSTAR_MAGPHYS','LOGMSTAR_MAGPHYS_ERR','LOGSFR_MAGPHYS','LOGSFR_MAGPHYS_ERR','LOGMDUST_DELOOZE','LOGMH2_RYAN','LOGMH1_MATT',,'H1_FLAG','LOGMGAS','LOGMGAS_ERR','MGAS_FLAG']
     #FF.print_full(jngl)
     j = jngl.index[jngl['H1_FLAG']==1].tolist()
     jup = jngl.index[jngl['H1_FLAG']==0].tolist()
 
-    xcg = CF.src6.copy()
     #['LOGMSTAR','LOGSFR','LOGSFR_ERR','LOGMH1','H1_FLAG','LOGMH2','LOGMH2_ERR','LOGMH2_LIM','GROUPID','ENV_CODE','NGAL','LOGMH']
     #FF.print_full(xcg)
     x = xcg.index[(xcg['H1_FLAG']!=99) & (xcg['LOGMH2'].notnull())].tolist()
@@ -383,14 +380,14 @@ def MH1MH2(jngl, show=False):
     ax.errorbar(Ms[j], MhR[j], markersize=5, fmt='o', c=cc[0], ecolor='Grey', alpha=0.5, zorder=15, label=str(s1)+' - JINGLE')
     ax.errorbar(Ms[jup], MhR[jup], markersize=5, fmt='v', c=cc[0], ecolor='Grey', zorder=15)
 
+    MhR = xcg['LOGMH2'] - xcg['LOGMH1']
+    MhRup = xcg['LOGMH2_LIM'] - xcg['LOGMH1']
+
+    size1 = len(xcg.index[MhR.notnull()].tolist()) + len(xcg.index[MhRup.notnull()].tolist())
+    ax.errorbar(xcg['LOGMSTAR'][x], MhR[x], markersize=5, fmt='o', c=cc[1], ecolor='Grey', alpha=0.5, zorder=10, label=str(size1)+' - xCOLDGASS')
+    ax.errorbar(xcg['LOGMSTAR'][xup], MhRup[xup], markersize=5, fmt='v', c=cc[1], ecolor='Grey', zorder=10)
+
     if show == True:
-        MhR = xcg['LOGMH2'] - xcg['LOGMH1']
-        MhRup = xcg['LOGMH2_LIM'] - xcg['LOGMH1']
-
-        size1 = len(xcg.index[MhR.notnull()].tolist()) + len(xcg.index[MhRup.notnull()].tolist())
-        ax.errorbar(xcg['LOGMSTAR'][x], MhR[x], markersize=5, fmt='o', c=cc[1], ecolor='Grey', alpha=0.5, zorder=10, label=str(size1)+' - xCOLDGASS')
-        ax.errorbar(xcg['LOGMSTAR'][xup], MhRup[xup], markersize=5, fmt='v', c=cc[1], ecolor='Grey', zorder=10)
-
         MhR = vrt['LOGMH2'] - vrt['LOGMH1']
 
         size2 = len(vrt.index[MhR.notnull()].tolist())
@@ -428,14 +425,16 @@ def MH1MH2(jngl, show=False):
     ax.errorbar((sfr-Ms)[j], MhR[j], markersize=5, fmt='o', c=cc[0], ecolor='Grey', alpha=0.5, zorder=15, label=str(s1)+' - JINGLE')
     ax.errorbar((sfr-Ms)[jup], MhR[jup], markersize=5, fmt='v', c=cc[0], ecolor='Grey', zorder=15)
 
+    MhR = xcg['LOGMH2'] - xcg['LOGMH1']
+    MhRup = xcg['LOGMH2_LIM'] - xcg['LOGMH1']
+
+    size1 = len(xcg.index[MhR.notnull()].tolist()) + len(xcg.index[MhRup.notnull()].tolist())
+    ax.errorbar((xcg['LOGSFR'] - xcg['LOGMSTAR'])[x], MhR[x], markersize=5, fmt='o', c=cc[1], ecolor='Grey', alpha=0.5, zorder=10, label=str(size1)+' - xCOLDGASS')
+    ax.errorbar((xcg['LOGSFR'] - xcg['LOGMSTAR'])[xup], MhRup[xup], markersize=5, fmt='v', c=cc[1], ecolor='Grey', zorder=10)
+
+        
+
     if show == True:
-        MhR = xcg['LOGMH2'] - xcg['LOGMH1']
-        MhRup = xcg['LOGMH2_LIM'] - xcg['LOGMH1']
-
-        size1 = len(xcg.index[MhR.notnull()].tolist()) + len(xcg.index[MhRup.notnull()].tolist())
-        ax.errorbar((xcg['LOGSFR'] - xcg['LOGMSTAR'])[x], MhR[x], markersize=5, fmt='o', c=cc[1], ecolor='Grey', alpha=0.5, zorder=10, label=str(size1)+' - xCOLDGASS')
-        ax.errorbar((xcg['LOGSFR'] - xcg['LOGMSTAR'])[xup], MhRup[xup], markersize=5, fmt='v', c=cc[1], ecolor='Grey', zorder=10)
-
         MhR = vrt['LOGMH2'] - vrt['LOGMH1']
 
         size2 = len(vrt.index[MhR.notnull()].tolist())
@@ -459,13 +458,12 @@ def MH1MH2(jngl, show=False):
 
     plt.show()
 
-def MH1byMH2(jngl, show=False):
+def MH1byMH2(jngl, xcg, show=False):
     #['LOGMSTAR_MAGPHYS','LOGMSTAR_MAGPHYS_ERR','LOGSFR_MAGPHYS','LOGSFR_MAGPHYS_ERR','LOGMDUST_DELOOZE','LOGMH2_RYAN','LOGMH1_MATT',,'H1_FLAG','LOGMGAS','LOGMGAS_ERR','MGAS_FLAG']
     #FF.print_full(jngl)
     j = jngl.index[jngl['H1_FLAG']==1].tolist()
     jup = jngl.index[jngl['H1_FLAG']==0].tolist()
 
-    xcg = CF.src6.copy()
     #['LOGMSTAR','LOGSFR','LOGSFR_ERR','LOGMH1','H1_FLAG','LOGMH2','LOGMH2_ERR','LOGMH2_LIM','GROUPID','ENV_CODE','NGAL','LOGMH']
     #FF.print_full(xcg)
     x = xcg.index[(xcg['H1_FLAG']!=99) & (xcg['LOGMH2'].notnull())].tolist()
@@ -494,15 +492,15 @@ def MH1byMH2(jngl, show=False):
     ax.errorbar((Mh1-Ms)[j], (Mh2-Ms)[j], markersize=5, fmt='o', c=cc[0], ecolor='Grey', alpha=0.5, zorder=15, label=str(s1)+' - JINGLE')
     ax.errorbar((Mh1-Ms)[jup], (Mh2-Ms)[jup], markersize=5, fmt='v', c=cc[0], ecolor='Grey', zorder=15)
 
+    Mh1 = xcg['LOGMH1'] - xcg['LOGMSTAR']
+    Mh2 = xcg['LOGMH2'] - xcg['LOGMSTAR']
+    Mh2up = xcg['LOGMH2_LIM'] - xcg['LOGMSTAR']
+
+    size1 = len(xcg.index[(Mh1.notnull()) & (Mh2.notnull())].tolist()) + len(xcg.index[(Mh1.notnull()) & (Mh2up.notnull())].tolist())
+    ax.errorbar(Mh1[x], Mh2[x], markersize=5, fmt='o', c=cc[1], ecolor='Grey', alpha=0.5, zorder=10, label=str(size1)+' - xCOLDGASS')
+    ax.errorbar(Mh1[xup], Mh2up[xup], markersize=5, fmt='v', c=cc[1], ecolor='Grey', zorder=10)
+
     if show == True:
-        Mh1 = xcg['LOGMH1'] - xcg['LOGMSTAR']
-        Mh2 = xcg['LOGMH2'] - xcg['LOGMSTAR']
-        Mh2up = xcg['LOGMH2_LIM'] - xcg['LOGMSTAR']
-
-        size1 = len(xcg.index[(Mh1.notnull()) & (Mh2.notnull())].tolist()) + len(xcg.index[(Mh1.notnull()) & (Mh2up.notnull())].tolist())
-        ax.errorbar(Mh1[x], Mh2[x], markersize=5, fmt='o', c=cc[1], ecolor='Grey', alpha=0.5, zorder=10, label=str(size1)+' - xCOLDGASS')
-        ax.errorbar(Mh1[xup], Mh2up[xup], markersize=5, fmt='v', c=cc[1], ecolor='Grey', zorder=10)
-
         Mh1 = vrt['LOGMH1'] - vrt['LOGMSTAR']
         Mh2 = vrt['LOGMH2'] - vrt['LOGMSTAR']
 
@@ -528,7 +526,7 @@ def MH1byMH2(jngl, show=False):
 
     plt.show()
 
-def MGAS(jngl, show=False):
+def MGAS(jngl, xcg, show=False):
     #['LOGMSTAR_MAGPHYS','LOGMSTAR_MAGPHYS_ERR','LOGSFR_MAGPHYS','LOGSFR_MAGPHYS_ERR','LOGMDUST_DELOOZE','LOGMH2_RYAN','LOGMH1_MATT',,'H1_FLAG','LOGMGAS','LOGMGAS_ERR','MGAS_FLAG']
     #FF.print_full(jngl)
     j = jngl.index[(jngl['MGAS_FLAG']==3) | (jngl['MGAS_FLAG']==6)].tolist()
@@ -537,7 +535,6 @@ def MGAS(jngl, show=False):
     jd = jngl.index[(jngl['MGAS_FLAG']==4)].tolist()
     jnon = jngl.index[(jngl['MGAS_FLAG']==5) | (jngl['MH_FLAG']==0)].tolist()
 
-    xcg = CF.src6.copy()
     #['LOGMSTAR','LOGSFR','LOGSFR_ERR','LOGMH1','H1_FLAG','LOGMH2','LOGMH2_ERR','LOGMH2_LIM','GROUPID','ENV_CODE','NGAL','LOGMH']
     #FF.print_full(xcg)
     x = xcg.index[(xcg['H1_FLAG']!=99) & (xcg['LOGMH2'].notnull())].tolist()
@@ -568,15 +565,17 @@ def MGAS(jngl, show=False):
     #ax.errorbar(Ms[jh2], Mg[jh2], markersize=5, fmt='d', c=cc[3], ecolor='Grey', alpha=0.5, zorder=15, label=str(len(jh2))+' - JINGLE')
     #ax.errorbar(Ms[jnon], Mg[jnon], markersize=5, fmt='h', c=cc[4], ecolor='Grey', alpha=0.5, zorder=15, label=str(len(jnon))+' - JINGLE')
 
+    #"""
+    Mg = np.log10(np.power(10,xcg['LOGMH2'])+np.power(10,xcg['LOGMH1']))
+    Mgup = np.log10(np.power(10,xcg['LOGMH2_LIM'])+np.power(10,xcg['LOGMH1']))
+    MhR = Mg - xcg['LOGMSTAR']
+    MhRup = Mgup - xcg['LOGMSTAR']
+
+    size1 = len(xcg.index[MhR.notnull()].tolist()) + len(xcg.index[MhRup.notnull()].tolist())
+    ax.errorbar(xcg['LOGMSTAR'][x], MhR[x], markersize=5, fmt='o', c=cc[1], ecolor='Grey', alpha=0.5, zorder=10, label=str(size1)+' - xCOLDGASS')
+    ax.errorbar(xcg['LOGMSTAR'][xup], MhRup[xup], markersize=5, fmt='v', c=cc[1], ecolor='Grey', zorder=10)
+
     if show == True:
-        #"""
-        MhR = xcg['LOGMH2'] - xcg['LOGMH1']
-        MhRup = xcg['LOGMH2_LIM'] - xcg['LOGMH1']
-
-        size1 = len(xcg.index[MhR.notnull()].tolist()) + len(xcg.index[MhRup.notnull()].tolist())
-        ax.errorbar(xcg['LOGMSTAR'][x], MhR[x], markersize=5, fmt='o', c=cc[1], ecolor='Grey', alpha=0.5, zorder=10, label=str(size1)+' - xCOLDGASS')
-        ax.errorbar(xcg['LOGMSTAR'][xup], MhRup[xup], markersize=5, fmt='v', c=cc[1], ecolor='Grey', zorder=10)
-
         MhR = vrt['LOGMH2'] - vrt['LOGMH1']
 
         size2 = len(vrt.index[MhR.notnull()].tolist())
@@ -617,16 +616,16 @@ def MGAS(jngl, show=False):
     #ax.errorbar((sfr-Ms)[jh2], Mg[jh2], markersize=5, fmt='d', c=cc[3], ecolor='Grey', alpha=0.5, zorder=15, label=str(len(jh2))+' - JINGLE')
     #ax.errorbar((sfr-Ms)[jnon], Mg[jnon], markersize=5, fmt='h', c=cc[4], ecolor='Grey', alpha=0.5, zorder=15, label=str(len(jnon))+' - JINGLE')
 
+    Mg = np.log10(np.power(10,xcg['LOGMH2'])+np.power(10,xcg['LOGMH1']))
+    Mgup = np.log10(np.power(10,xcg['LOGMH2_LIM'])+np.power(10,xcg['LOGMH1']))
+    MhR = Mg - xcg['LOGMSTAR']
+    MhRup = Mgup - xcg['LOGMSTAR']
+
+    size1 = len(xcg.index[MhR.notnull()].tolist()) + len(xcg.index[MhRup.notnull()].tolist())
+    ax.errorbar((xcg['LOGSFR'] - xcg['LOGMSTAR'])[x], MhR[x], markersize=5, fmt='o', c=cc[1], ecolor='Grey', alpha=0.5, zorder=10, label=str(size1)+' - xCOLDGASS')
+    ax.errorbar((xcg['LOGSFR'] - xcg['LOGMSTAR'])[xup], MhRup[xup], markersize=5, fmt='v', c=cc[1], ecolor='Grey', zorder=10)
+
     if show == True:
-        #"""
-
-        MhR = xcg['LOGMH2'] - xcg['LOGMH1']
-        MhRup = xcg['LOGMH2_LIM'] - xcg['LOGMH1']
-
-        size1 = len(xcg.index[MhR.notnull()].tolist()) + len(xcg.index[MhRup.notnull()].tolist())
-        ax.errorbar((xcg['LOGSFR'] - xcg['LOGMSTAR'])[x], MhR[x], markersize=5, fmt='o', c=cc[1], ecolor='Grey', alpha=0.5, zorder=10, label=str(size1)+' - xCOLDGASS')
-        ax.errorbar((xcg['LOGSFR'] - xcg['LOGMSTAR'])[xup], MhRup[xup], markersize=5, fmt='v', c=cc[1], ecolor='Grey', zorder=10)
-
         MhR = vrt['LOGMH2'] - vrt['LOGMH1']
 
         size2 = len(vrt.index[MhR.notnull()].tolist())
@@ -652,12 +651,12 @@ def MGAS(jngl, show=False):
 
     plt.show()
 
-def main(src):
-    MH1(src)
-    MH2(src)
-    MH1MH2(src)
-    MH1byMH2(src)
-    MGAS(src)
+def main(src, scr2):
+    MH1(src, scr2)
+    MH2(src, scr2)
+    MH1MH2(src, scr2)
+    MH1byMH2(src, scr2)
+    MGAS(src, scr2)
 
 if __name__ == '__main__':
     main()

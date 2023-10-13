@@ -39,6 +39,7 @@ def HERACLES_main(src):
     return src
 
 def XCG_main(src):
+    src['IDNUM'] = src.index
     #make 0s NaNs
     src.loc[src['LOGMH2'] < 0.1, 'LOGMH2'] = np.nan
     src.loc[src['LOGMH2_LIM'] < 0.1, 'LOGMH2_LIM'] = np.nan

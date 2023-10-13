@@ -80,11 +80,20 @@ def environments():
     src = CA.Group_By_Dens(src)
     grouper = src.groupby('GALACTIC_DENS')
 
+    xcg = src6.copy()
+    xcg = CA.Group_By_Dens_Gen(xcg)
+    xcg_grouper = xcg.groupby('GALACTIC_DENS')
+
     for key, group in grouper:
+        print(key)
         FF.print_full(group)
         print(len(group['GALACTIC_DENS']))
-        print(key)
-        M3.main(group)
+        
+        FF.print_full(xcg_grouper.get_group(key))
+        print(len(xcg_grouper.get_group(key)['GALACTIC_DENS']))
+        
+        M3.main(group, xcg_grouper.get_group(key))
+
 
 
 

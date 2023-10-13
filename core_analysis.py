@@ -62,8 +62,25 @@ def Group_By_Dens(src):
 
         if (src['LOGMHALO_TEMPEL'][idx] >= C.HALOMASS_LOW) and (src['NGAL'][idx] >= C.NGAL_LOW):
             src['GALACTIC_DENS'][idx] = 'High-Density'
-        #elif (src['NGAL'][idx] <= 2):
-        #    src['GALACTIC_DENS'][idx] = 'Low-Density'
+        elif (src['NGAL'][idx] <= 2):
+            src['GALACTIC_DENS'][idx] = 'Low-Density'
+        else:
+            src['GALACTIC_DENS'][idx] = 'Medium-Density'
+    #"""
+    
+    return src
+
+def Group_By_Dens_Gen(src):
+    src['GALACTIC_DENS'] = pd.DataFrame(np.zeros(len(src['ID'])))
+    
+    #"""
+    for x in src['IDNUM']:
+        idx = src.index[src['IDNUM'] == x][0]
+
+        if (src['LOGMH'][idx] >= C.HALOMASS_LOW) and (src['NGAL'][idx] >= C.NGAL_LOW):
+            src['GALACTIC_DENS'][idx] = 'High-Density'
+        elif (src['NGAL'][idx] <= 2):
+            src['GALACTIC_DENS'][idx] = 'Low-Density'
         else:
             src['GALACTIC_DENS'][idx] = 'Medium-Density'
     #"""
