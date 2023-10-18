@@ -103,7 +103,12 @@ def environments():
 
 #call on the main function when the script is executed
 if __name__ == '__main__':
-    main()
+    #main()
+    df1 = src1.copy()
+
+    RPLT.x_Mstar(df1, df1['LOGMSTAR_MAGPHYS'], df1['LOGMSTAR_MAGPHYS_ERR'], '$M_{star}$ [Log($M_{\odot}$)]')
+    RPLT.x_Mstar(df1, df1['LOGSFR_MAGPHYS'], df1['LOGSFR_MAGPHYS_ERR'], '$SFR$ [Log($M_{\odot}$/yr)]')
+
 
 """
 Old functions, for archival purposes...

@@ -39,7 +39,10 @@ def four_plot(x, x_err, y, y_err, names, x_label):
 
         LM.pearson(xs, ys, ax)
         LM.curvefitting(xs, ys, ax)
-        LM.linmixing(xs, ys, xs_err, ys_err, ax)
+        try:
+            LM.linmixing(xs, ys, xs_err, ys_err, ax)
+        except EOFError as e:
+            print(e)
         ax.errorbar(xs, ys, ys_err, xs_err, fmt='o', color='Purple', ecolor='Black', markersize=C.SIZE/3, alpha=C.ALPHA)
     
         box = ax.get_position()
@@ -62,14 +65,14 @@ def x_Mstar(src, x, x_err, xtitle):
     dust = src['LOGMDUST_DELOOZE']
     dust_err = src['LOGMDUST_DELOOZE_ERR']
 
-    h_alpha = src['LOGMH1']
-    h_alpha_err = src['LOGMH1_ERR']
+    h_alpha = src['LOGMH1_MATT']
+    h_alpha_err = src['LOGMH1_MATT_ERR']
 
-    h_mol = src['LOGMH2_ALL']
-    h_mol_err = src['LOGMH2_ALL_ERR']
+    h_mol = src['LOGMH2_RYAN']
+    h_mol_err = src['LOGMH2_RYAN_ERR']
 
-    metal = src['LOGMMETAL']
-    metal_err = src['LOGMMETAL_ERR']
+    metal = src['LOGMZ']
+    metal_err = src['LOGMZ_ERR']
 
     gas = src['LOGMGAS']
     gas_err = src['LOGMGAS_ERR']

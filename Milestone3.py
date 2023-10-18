@@ -653,10 +653,10 @@ def MGAS(jngl, xcg, show=False):
 
 def main(src, scr2):
     MH1(src, scr2)
-    MH2(src, scr2)
-    MH1MH2(src, scr2)
-    MH1byMH2(src, scr2)
-    MGAS(src, scr2)
+    #MH2(src, scr2)
+    #MH1MH2(src, scr2)
+    #MH1byMH2(src, scr2)
+    #MGAS(src, scr2)
 
 if __name__ == '__main__':
     main()
