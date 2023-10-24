@@ -119,6 +119,9 @@ def find_Mgas(src):
 
     G2DR = (src['LOGMGAS'] - src['LOGMDUST_DELOOZE']).mean()
     G2DR_ERR = (np.sqrt(np.power(src['LOGMGAS_ERR'], 2) + np.power(src['LOGMDUST_DELOOZE_ERR'], 2))).mean()
+    print(G2DR)
+    print(G2DR_ERR)
+
 
     y_val = G2DR + src['LOGMDUST_DELOOZE']
     y_val_err = y_val * np.sqrt(mt.pow(G2DR_ERR/G2DR,2) + np.power(src['LOGMDUST_DELOOZE_ERR']/src['LOGMDUST_DELOOZE'],2))
