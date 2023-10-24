@@ -60,17 +60,30 @@ def G2DR(src):
     j = src.index[(src['MGAS_FLAG']==3) | (src['MGAS_FLAG']==6)].tolist()
     bins = [0,1,2,3,4,5,6]
 
+    gds = []
+
     for x in bins:
         ratio = (src['LOGMGAS'] - src['LOGMDUST_DELOOZE'])[j].loc[src['DIST_BINS']==x]
 
         GD_ratio = ratio.mean()
 
-        print(GD_ratio)
+        gds.append(GD_ratio)
 
+    m = (2.525 - 2.298) / (6-2)
+    b = 2.525 - m*6
 
+    for i in range(len(gds)):
+        if mt.isnan(gds[i]):
+            gds[i] = m*i + b
 
+    src['LOGMGAS_NEW'] = src['LOGMGAS'].copy()
 
+    for x in bins:
+        src.loc[(src['DIST_BINS'] == x) & (src['MGAS_FLAG']==4), 'LOGMGAS_NEW'] = gds[x] + src['LOGMDUST_DELOOZE']
     
+    #FF.print_full(src)
+
+    return src
 
 def plot1(src):
     ratio = src['LOGMH2'] - src['LOGMSTAR_MAGPHYS']
@@ -201,6 +214,53 @@ def plot5(src):
 
     plt.show()
 
+def plot6(src):
+    j = src.index[(src['MGAS_FLAG']==3) | (src['MGAS_FLAG']==6)].tolist()
+    jd = src.index[(src['MGAS_FLAG']==4)].tolist()
+
+    src = G2DR(src)
+
+    Ms = src['LOGMSTAR_MAGPHYS']
+    sfr = src['LOGSFR_MAGPHYS']
+    Mg = src['LOGMGAS_NEW'] - Ms
+
+    fig, ax = plt.subplots()
+
+    s1 = len(Mg.index[Mg.notnull()].tolist())
+    ax.errorbar(Ms[j], Mg[j], markersize=5, fmt='o', c='Blue', ecolor='Grey', alpha=0.5, zorder=15, label=str(len(j))+' - JINGLE')
+    ax.errorbar(Ms[jd], Mg[jd], markersize=5, fmt='v', c='Grey', ecolor='Grey', zorder=15, label=str(len(jd))+' - JINGLE')
+
+    ax.set_ylabel('log $M_{Gas}/M_{*}$')      
+    ax.set_xlabel('log $M_{*}$ $[M_{\odot}]$')
+
+    #ax.set_xlim(8.5, 11.5)
+    #ax.set_ylim(8.25, 11)
+
+    #formatting plot
+    box = ax.get_position()
+    ax.set_position([box.x0, box.y0, box.width * 0.8, box.height])
+    ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+
+    plt.show()
+
+    fig, ax = plt.subplots()
+
+    ax.errorbar((sfr-Ms)[j], Mg[j], markersize=5, fmt='o', c='Blue', ecolor='Grey', alpha=0.5, zorder=15, label=str(len(j))+' - JINGLE')
+    ax.errorbar((sfr-Ms)[jd], Mg[jd], markersize=5, fmt='v', c='Grey', ecolor='Grey', zorder=15, label=str(len(jd))+' - JINGLE')
+
+    ax.set_ylabel('log $M_{Gas}/M_{*}$')      
+    ax.set_xlabel('log $M_{*}$ $[M_{\odot}]$')
+
+    #ax.set_xlim(8.5, 11.5)
+    #ax.set_ylim(8.25, 11)
+
+    #formatting plot
+    box = ax.get_position()
+    ax.set_position([box.x0, box.y0, box.width * 0.8, box.height])
+    ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+
+    plt.show()
+
 
 def main():
     df = CF.src1.copy()
@@ -212,7 +272,7 @@ def main():
     #plot3(df)
     #plot4(df)
     #plot5(df)
-    G2DR(df)
+    plot6(df)
 
     
 if __name__ == '__main__':
