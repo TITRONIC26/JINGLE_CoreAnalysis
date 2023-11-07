@@ -41,7 +41,7 @@ src6 = DM.XCG_main(src6)
 src7 = DM.HERACLES_main(src7)
 
 def main():
-    #FF.print_full(src1)
+    FF.print_full(src1)
     #FF.print_full(src2)
     #FF.print_full(src3)
     #FF.print_full(src4)
@@ -49,7 +49,7 @@ def main():
     #FF.print_full(src6)
     #FF.print_full(src7)
 
-    environments()
+    #environments()
 
 def comp_plots():
     df1 = src1[['LOGMSTAR_MAGPHYS','LOGMSTAR_MAGPHYS_ERR','LOGSFR_MAGPHYS','LOGSFR_MAGPHYS_ERR','LOGMH2_RYAN','LOGMH1_MATT','LOGMH1_MATT_ERR','H1_FLAG','LOGMH2_RYAN_ERR','LOGMGAS','LOGMGAS_ERR','MGAS_FLAG','JINGLEID']].copy()
@@ -103,11 +103,11 @@ def environments():
 
 #call on the main function when the script is executed
 if __name__ == '__main__':
-    #main()
-    df1 = src1.copy()
+    main()
+    #df1 = src1.copy()
 
-    RPLT.x_Mstar(df1, df1['LOGMSTAR_MAGPHYS'], df1['LOGMSTAR_MAGPHYS_ERR'], '$M_{star}$ [Log($M_{\odot}$)]')
-    RPLT.x_Mstar(df1, df1['LOGSFR_MAGPHYS'], df1['LOGSFR_MAGPHYS_ERR'], '$SFR$ [Log($M_{\odot}$/yr)]')
+    #RPLT.x_Mstar(df1, df1['LOGMSTAR_MAGPHYS'], df1['LOGMSTAR_MAGPHYS_ERR'], '$M_{star}$ [Log($M_{\odot}$)]')
+    #RPLT.x_Mstar(df1, df1['LOGSFR_MAGPHYS'], df1['LOGSFR_MAGPHYS_ERR'], '$SFR$ [Log($M_{\odot}$/yr)]')
 
 
 """

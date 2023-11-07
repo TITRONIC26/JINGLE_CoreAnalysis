@@ -215,8 +215,13 @@ def plot5(src):
     plt.show()
 
 def plot6(src):
+    xcg = CF.src6.copy()
+
     j = src.index[(src['MGAS_FLAG']==3) | (src['MGAS_FLAG']==6)].tolist()
     jd = src.index[(src['MGAS_FLAG']==4)].tolist()
+
+    x = xcg.index[(xcg['H1_FLAG']!=99) & (xcg['LOGMH2'].notnull())].tolist()
+    xup = xcg.index[(xcg['H1_FLAG']==99) & (xcg['LOGMH2_LIM'].notnull())].tolist()
 
     src = G2DR(src)
 
@@ -228,7 +233,16 @@ def plot6(src):
 
     s1 = len(Mg.index[Mg.notnull()].tolist())
     ax.errorbar(Ms[j], Mg[j], markersize=5, fmt='o', c='Blue', ecolor='Grey', alpha=0.5, zorder=15, label=str(len(j))+' - JINGLE')
-    ax.errorbar(Ms[jd], Mg[jd], markersize=5, fmt='v', c='Grey', ecolor='Grey', zorder=15, label=str(len(jd))+' - JINGLE')
+    ax.errorbar(Ms[jd], Mg[jd], markersize=5, fmt='v', c='Blue', ecolor='Grey', zorder=15, label=str(len(jd))+' - JINGLE')
+
+    Mg = np.log10(np.power(10,xcg['LOGMH2'])+np.power(10,xcg['LOGMH1']))
+    Mgup = np.log10(np.power(10,xcg['LOGMH2_LIM'])+np.power(10,xcg['LOGMH1']))
+    MhR = Mg - xcg['LOGMSTAR']
+    MhRup = Mgup - xcg['LOGMSTAR']
+
+    size1 = len(xcg.index[MhR.notnull()].tolist()) + len(xcg.index[MhRup.notnull()].tolist())
+    ax.errorbar(xcg['LOGMSTAR'][x], MhR[x], markersize=5, fmt='o', c='Black', ecolor='Grey', alpha=0.5, zorder=10, label=str(size1)+' - xCOLDGASS')
+    ax.errorbar(xcg['LOGMSTAR'][xup], MhRup[xup], markersize=5, fmt='v', c='Black', ecolor='Grey', alpha=0.5, zorder=10)
 
     ax.set_ylabel('log $M_{Gas}/M_{*}$')      
     ax.set_xlabel('log $M_{*}$ $[M_{\odot}]$')
@@ -243,13 +257,26 @@ def plot6(src):
 
     plt.show()
 
+    Ms = src['LOGMSTAR_MAGPHYS']
+    sfr = src['LOGSFR_MAGPHYS']
+    Mg = src['LOGMGAS_NEW'] - Ms
+
     fig, ax = plt.subplots()
 
     ax.errorbar((sfr-Ms)[j], Mg[j], markersize=5, fmt='o', c='Blue', ecolor='Grey', alpha=0.5, zorder=15, label=str(len(j))+' - JINGLE')
-    ax.errorbar((sfr-Ms)[jd], Mg[jd], markersize=5, fmt='v', c='Grey', ecolor='Grey', zorder=15, label=str(len(jd))+' - JINGLE')
+    ax.errorbar((sfr-Ms)[jd], Mg[jd], markersize=5, fmt='v', c='Blue', ecolor='Grey', zorder=15, label=str(len(jd))+' - JINGLE')
+
+    Mg = np.log10(np.power(10,xcg['LOGMH2'])+np.power(10,xcg['LOGMH1']))
+    Mgup = np.log10(np.power(10,xcg['LOGMH2_LIM'])+np.power(10,xcg['LOGMH1']))
+    MhR = Mg - xcg['LOGMSTAR']
+    MhRup = Mgup - xcg['LOGMSTAR']
+
+    size1 = len(xcg.index[MhR.notnull()].tolist()) + len(xcg.index[MhRup.notnull()].tolist())
+    ax.errorbar((xcg['LOGSFR'] - xcg['LOGMSTAR'])[x], MhR[x], markersize=5, fmt='o', c='Black', ecolor='Grey', alpha=0.5, zorder=10, label=str(size1)+' - xCOLDGASS')
+    ax.errorbar((xcg['LOGSFR'] - xcg['LOGMSTAR'])[xup], MhRup[xup], markersize=5, fmt='v', c='Black', ecolor='Grey', alpha=0.5, zorder=10)
 
     ax.set_ylabel('log $M_{Gas}/M_{*}$')      
-    ax.set_xlabel('log $M_{*}$ $[M_{\odot}]$')
+    ax.set_xlabel('log sSFR $[yr^{-1}]$')
 
     #ax.set_xlim(8.5, 11.5)
     #ax.set_ylim(8.25, 11)
@@ -271,8 +298,8 @@ def main():
     #plot2(df)
     #plot3(df)
     #plot4(df)
-    #plot5(df)
-    plot6(df)
+    plot5(df)
+    #plot6(df)
 
     
 if __name__ == '__main__':

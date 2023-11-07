@@ -101,26 +101,25 @@ def generate_std_error(src, column):
 
 def find_Mgas(src):
     src['LOGMH1'] = src['LOGMH1_MATT']
-    src['LOGMH2'] = src['LOGMH2_RYAN']
+    src['LOGMH2'] = src['LOGMH2_TING']
 
-    src.loc[pd.isnull(src['LOGMH1']), 'LOGMH1'] = src['LOGMH1_TING']
-    src.loc[pd.isnull(src['LOGMH2']), 'LOGMH2'] = src['LOGMH2_TING']
-
-    src.loc[src['LOGMH1'] == 0, 'LOGMH1'] = np.nan
-    src.loc[src['LOGMH2'] == 0, 'LOGMH2'] = np.nan
+    #src.loc[pd.isnull(src['LOGMH1']), 'LOGMH1'] = src['LOGMH1_TING']
+    
+    #src.loc[src['LOGMH1'] == 0, 'LOGMH1'] = np.nan
+    #src.loc[src['LOGMH2'] == 0, 'LOGMH2'] = np.nan
 
     vals = MF.error_add(np.power(10,src['LOGMH1']), np.log(10)*np.power(10,src['LOGMH1'])*(src['LOGMH1_MATT_ERR']), np.power(10,src['LOGMH2']), np.log(10)*np.power(10,src['LOGMH2'])*(src['LOGMH2_RYAN_ERR']))
     src['LOGMGAS'] = np.log10(vals[0])
     src['LOGMGAS_ERR'] = (1/np.log(10)) * ((vals[1])/(vals[0]))
     src['MGAS_FLAG'] = 0
-    src['MH_FLAG'] = 0
+    #src['MH_FLAG'] = 0
 
     src.loc[(pd.notnull(src['LOGMH1'])) & (pd.notnull(src['LOGMH2'])), 'MGAS_FLAG'] = 3
 
     G2DR = (src['LOGMGAS'] - src['LOGMDUST_DELOOZE']).mean()
     G2DR_ERR = (np.sqrt(np.power(src['LOGMGAS_ERR'], 2) + np.power(src['LOGMDUST_DELOOZE_ERR'], 2))).mean()
-    print(G2DR)
-    print(G2DR_ERR)
+    #print(G2DR)
+    #print(G2DR_ERR)
 
 
     y_val = G2DR + src['LOGMDUST_DELOOZE']
@@ -131,15 +130,15 @@ def find_Mgas(src):
     src.loc[src['MGAS_FLAG'] == 4, 'LOGMGAS_ERR'] = y_val_err
 
     src.loc[pd.isnull(src['LOGMGAS']), 'MGAS_FLAG'] = 5
-    src.loc[(pd.notnull(src['LOGMH1'])) & (pd.isnull(src['LOGMH2'])), 'MH_FLAG'] = 1
-    src.loc[(pd.isnull(src['LOGMH1'])) & (pd.notnull(src['LOGMH2'])), 'MH_FLAG'] = 2
-    src.loc[(pd.isnull(src['LOGMH1_MATT'])) & (pd.isnull(src['LOGMH2_RYAN'])) & (src['MGAS_FLAG'] == 3), 'MGAS_FLAG'] = 6
+    #src.loc[(pd.notnull(src['LOGMH1'])) & (pd.isnull(src['LOGMH2'])), 'MH_FLAG'] = 1
+    #src.loc[(pd.isnull(src['LOGMH1'])) & (pd.notnull(src['LOGMH2'])), 'MH_FLAG'] = 2
+    #src.loc[(pd.isnull(src['LOGMH1_MATT'])) & (pd.isnull(src['LOGMH2_RYAN'])) & (src['MGAS_FLAG'] == 3), 'MGAS_FLAG'] = 6
 
-    h2s = np.log10(np.power(10,src['LOGMGAS']) - np.power(10,src['LOGMH1']))
-    h1s = np.log10(np.power(10,src['LOGMGAS']) - np.power(10,src['LOGMH2']))
+    #h2s = np.log10(np.power(10,src['LOGMGAS']) - np.power(10,src['LOGMH1']))
+    #h1s = np.log10(np.power(10,src['LOGMGAS']) - np.power(10,src['LOGMH2']))
 
-    src.loc[pd.isnull(src['LOGMH1']), 'LOGMH1'] = src['LOGMH1'] + h1s
-    src.loc[pd.isnull(src['LOGMH2']), 'LOGMH2'] = src['LOGMH2'] + h2s
+    #src.loc[pd.isnull(src['LOGMH1']), 'LOGMH1'] = src['LOGMH1'] + h1s
+    #src.loc[pd.isnull(src['LOGMH2']), 'LOGMH2'] = src['LOGMH2'] + h2s
 
     src.loc[pd.isnull(src['LOGMGAS']), 'LOGMGAS'] = 0
 

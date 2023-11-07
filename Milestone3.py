@@ -167,7 +167,7 @@ def weighting3(col,y1,y2,x1,x2):
 
     return (xs, ave, ave_e, med)
 
-def MH1(jngl, xcg, show=False):
+def MH1(jngl, xcg, show=True):
     #['LOGMSTAR_MAGPHYS','LOGMSTAR_MAGPHYS_ERR','LOGSFR_MAGPHYS','LOGSFR_MAGPHYS_ERR','LOGMDUST_DELOOZE','LOGMH2_RYAN','LOGMH1_MATT','H1_FLAG','LOGMGAS','LOGMGAS_ERR','MGAS_FLAG']
     #FF.print_full(jngl)
     j = jngl.index[jngl['H1_FLAG']==1].tolist()
@@ -258,7 +258,7 @@ def MH1(jngl, xcg, show=False):
 
     plt.show()
 
-def MH2(jngl, xcg, show=False):
+def MH2(jngl, xcg, show=True):
     #['LOGMSTAR_MAGPHYS','LOGMSTAR_MAGPHYS_ERR','LOGSFR_MAGPHYS','LOGSFR_MAGPHYS_ERR','LOGMDUST_DELOOZE','LOGMH2_RYAN','LOGMH1_MATT',,'H1_FLAG','LOGMGAS','LOGMGAS_ERR','MGAS_FLAG']
     #FF.print_full(jngl)
 
@@ -345,7 +345,7 @@ def MH2(jngl, xcg, show=False):
 
     plt.show()
 
-def MH1MH2(jngl, xcg, show=False):
+def MH1MH2(jngl, xcg, show=True):
     #['LOGMSTAR_MAGPHYS','LOGMSTAR_MAGPHYS_ERR','LOGSFR_MAGPHYS','LOGSFR_MAGPHYS_ERR','LOGMDUST_DELOOZE','LOGMH2_RYAN','LOGMH1_MATT',,'H1_FLAG','LOGMGAS','LOGMGAS_ERR','MGAS_FLAG']
     #FF.print_full(jngl)
     j = jngl.index[jngl['H1_FLAG']==1].tolist()
@@ -458,7 +458,7 @@ def MH1MH2(jngl, xcg, show=False):
 
     plt.show()
 
-def MH1byMH2(jngl, xcg, show=False):
+def MH1byMH2(jngl, xcg, show=True):
     #['LOGMSTAR_MAGPHYS','LOGMSTAR_MAGPHYS_ERR','LOGSFR_MAGPHYS','LOGSFR_MAGPHYS_ERR','LOGMDUST_DELOOZE','LOGMH2_RYAN','LOGMH1_MATT',,'H1_FLAG','LOGMGAS','LOGMGAS_ERR','MGAS_FLAG']
     #FF.print_full(jngl)
     j = jngl.index[jngl['H1_FLAG']==1].tolist()
@@ -526,7 +526,7 @@ def MH1byMH2(jngl, xcg, show=False):
 
     plt.show()
 
-def MGAS(jngl, xcg, show=False):
+def MGAS(jngl, xcg, show=True):
     #['LOGMSTAR_MAGPHYS','LOGMSTAR_MAGPHYS_ERR','LOGSFR_MAGPHYS','LOGSFR_MAGPHYS_ERR','LOGMDUST_DELOOZE','LOGMH2_RYAN','LOGMH1_MATT',,'H1_FLAG','LOGMGAS','LOGMGAS_ERR','MGAS_FLAG']
     #FF.print_full(jngl)
     j = jngl.index[(jngl['MGAS_FLAG']==3) | (jngl['MGAS_FLAG']==6)].tolist()
@@ -653,10 +653,10 @@ def MGAS(jngl, xcg, show=False):
 
 def main(src, scr2):
     MH1(src, scr2)
-    #MH2(src, scr2)
-    #MH1MH2(src, scr2)
-    #MH1byMH2(src, scr2)
-    #MGAS(src, scr2)
+    MH2(src, scr2)
+    MH1MH2(src, scr2)
+    MH1byMH2(src, scr2)
+    MGAS(src, scr2)
 
 if __name__ == '__main__':
-    main()
+    main(CF.src1.copy(), CF.src6.copy())
