@@ -59,6 +59,23 @@ def median(x, y):
     plt.plot(bins-delta/2, running_median, color='White', linewidth=5)
     plt.plot(bins-delta/2, running_median, color='Black', linewidth=3)
 
+def mean(x, y):
+    nots = y.index[y.notnull()].tolist()
+    
+    x = x[nots]
+    y = y[nots]
+
+    total_bins = int(len(y)/15)
+    print(total_bins)
+
+    bins = np.linspace(x.min(), x.max(), total_bins)
+    delta = bins[1]-bins[0]
+    idx = np.digitize(x, bins)
+    running_mean = [np.mean(y[idx==k]) for k in range(total_bins)]
+
+    plt.plot(bins-delta/2, running_mean, color='White', linewidth=5)
+    plt.plot(bins-delta/2, running_mean, color='Red', linewidth=3)
+
 def seven_odds():
     src = MAIN.jingle.copy()
 
@@ -70,20 +87,27 @@ def seven_odds():
 
     return seven
     
-def sSFR_MS(src, xcg = True, seven = True):
-    src = dist(src)
+def sSFR_MS(src, xcg = True, seven = True, RMOL = True, DUST = False, Mean = True, Median = True):
+    if RMOL == True:
+        src['CC'] = src['LOGMH2'] - src['LOGMH1']
+        label = 'log Rmol'
+        cc = 'rainbow'
+    elif DUST == True:
+        src['CC'] = src['LOGMDUST'] - src['LOGMSTAR_MAGPHYS']
+        label = 'log $M_{dust}$/$M_{*}$'
+        cc = 'rainbow'
+    else:
+        src = dist(src)
+        label = 'MS dist'
+        cc = 'rainbow_r'
 
-    color_map = matplotlib.cm.get_cmap('rainbow_r')
+    color_map = matplotlib.cm.get_cmap(cc)
     plt.set_cmap(color_map)
 
     if xcg == True:
         xcoldgass = CF.src6.copy()
 
-        xn = xcoldgass.index[(xcoldgass['H1_FLAG']!=99) & (xcoldgass['LOGMH2'].notnull())].tolist()
-        xup = xcoldgass.index[(xcoldgass['H1_FLAG']==99) & (xcoldgass['LOGMH2_LIM'].notnull())].tolist()
-
-        plt.scatter(xcoldgass['LOGMSTAR'][xn], (xcoldgass['LOGSFR']-xcoldgass['LOGMSTAR'])[xn], c='Black', alpha=0.25, marker='o')
-        plt.scatter(xcoldgass['LOGMSTAR'][xup], (xcoldgass['LOGSFR']-xcoldgass['LOGMSTAR'])[xup], c='Black', alpha=0.25, marker=r'$\downarrow$')
+        plt.scatter(xcoldgass['LOGMSTAR'], (xcoldgass['LOGSFR']-xcoldgass['LOGMSTAR']), c='Black', alpha=0.25, marker='o')
         
 
     plt.scatter(src['LOGMSTAR_MAGPHYS'], (src['LOGSFR_MAGPHYS']-src['LOGMSTAR_MAGPHYS']), c=src['CC'], edgecolors= "black")
@@ -92,7 +116,12 @@ def sSFR_MS(src, xcg = True, seven = True):
 
     plt.plot(xs, f(xs), linestyle='--', color='Grey')
 
-    plt.colorbar(label='MS dist')
+    plt.colorbar(label=label)
+    
+    if Mean == True:
+        mean(src['LOGMSTAR_MAGPHYS'], (src['LOGSFR_MAGPHYS']-src['LOGMSTAR_MAGPHYS']))
+    if Median == True:
+        median(src['LOGMSTAR_MAGPHYS'], (src['LOGSFR_MAGPHYS']-src['LOGMSTAR_MAGPHYS']))
 
     plt.xlabel('log $M_{*}$ [$M_{\odot}$]')      
     plt.ylabel('log sSFR $[yr^{-1}]$')
@@ -142,10 +171,21 @@ def Catinella_1(src, xcg = True, seven = True):
 
     plt.show()
 
-def Catinella_2(src, xcg = True, seven = True):
-    src = dist(src)
+def Catinella_2(src, xcg = True, seven = True, RMOL=False, DUST=True, Mean=True, Median=True):
+    if RMOL == True:
+        src['CC'] = src['LOGMH2'] - src['LOGMH1']
+        label = 'log Rmol'
+        cc = 'rainbow'
+    elif DUST == True:
+        src['CC'] = src['LOGMDUST'] - src['LOGMSTAR_MAGPHYS']
+        label = 'log $M_{dust}$/$M_{*}$'
+        cc = 'rainbow'
+    else:
+        src = dist(src)
+        label = 'MS dist'
+        cc = 'rainbow_r'
 
-    color_map = matplotlib.cm.get_cmap('rainbow_r')
+    color_map = matplotlib.cm.get_cmap(cc)
     plt.set_cmap(color_map)
 
     if xcg == True:
@@ -156,23 +196,36 @@ def Catinella_2(src, xcg = True, seven = True):
         xup = xcoldgass.index[(xcoldgass['LOGMH2_LIM'].notnull())].tolist()
         xs = xcoldgass.index[(xcoldgass['H1_FLAG']==99) & (xcoldgass['LOGMH2_LIM'].notnull())].tolist()
 
-        plt.scatter((xcoldgass['LOGMH2']-xcoldgass['LOGMSTAR'])[xn], (xcoldgass['LOGMH1']-xcoldgass['LOGMSTAR'])[xn], c='Black', alpha=0.25, marker='o')
-        plt.scatter((xcoldgass['LOGMH2']-xcoldgass['LOGMSTAR'])[xleft], (xcoldgass['LOGMH1']-xcoldgass['LOGMSTAR'])[xleft], c='Black', alpha=0.25, marker=r'$\leftarrow$')
-        plt.scatter((xcoldgass['LOGMH2_LIM']-xcoldgass['LOGMSTAR'])[xup], (xcoldgass['LOGMH1']-xcoldgass['LOGMSTAR'])[xup], c='Black', alpha=0.25, marker=r'$\downarrow$')
-        plt.scatter((xcoldgass['LOGMH2_LIM']-xcoldgass['LOGMSTAR'])[xs], (xcoldgass['LOGMH1']-xcoldgass['LOGMSTAR'])[xs], c='Black', alpha=0.25, marker='x')
+        plt.scatter((xcoldgass['LOGMH1']-xcoldgass['LOGMSTAR'])[xn], (xcoldgass['LOGMH2']-xcoldgass['LOGMSTAR'])[xn], c='Black', alpha=0.25, marker='o')
+        plt.scatter((xcoldgass['LOGMH1']-xcoldgass['LOGMSTAR'])[xleft], (xcoldgass['LOGMH2']-xcoldgass['LOGMSTAR'])[xleft], c='Black', alpha=0.25, marker=r'$\leftarrow$')
+        plt.scatter((xcoldgass['LOGMH1']-xcoldgass['LOGMSTAR'])[xup], (xcoldgass['LOGMH2_LIM']-xcoldgass['LOGMSTAR'])[xup], c='Black', alpha=0.25, marker=r'$\downarrow$')
+        plt.scatter((xcoldgass['LOGMH1']-xcoldgass['LOGMSTAR'])[xs], (xcoldgass['LOGMH2_LIM']-xcoldgass['LOGMSTAR'])[xs], c='Black', alpha=0.25, marker='x')
 
-    x = src['LOGMH2'] - src['LOGMSTAR_MAGPHYS']
-    y = src['LOGMH1'] - src['LOGMSTAR_MAGPHYS']
+    y = src['LOGMH2'] - src['LOGMSTAR_MAGPHYS']
+    x = src['LOGMH1'] - src['LOGMSTAR_MAGPHYS']
+    FF.print_full(y)
 
     norm = src.index[(src['H1_F']==1) & (src['H2_F']==1)].tolist()
-    left = src.index[(src['H1_F']==2)].tolist()
-    down = src.index[(src['H2_F']==2)].tolist()
+    left = src.index[(src['H1_F']==2) & (src['H2_F']==1)].tolist()
+    down = src.index[(src['H1_F']==1) & (src['H2_F']==2)].tolist()
+    xs = src.index[(src['H1_F']==2) & (src['H2_F']==2)].tolist()
+
+    print(len(norm))
+    print(len(left))
+    print(len(down))
+    print(len(xs))
 
     plt.scatter(x[left], y[left], c=src['CC'][left], marker=r'$\leftarrow$')
     plt.scatter(x[down], y[down], c=src['CC'][down], marker=r'$\downarrow$')
+    plt.scatter(x[xs], y[xs], c=src['CC'][xs], marker='x')
     plt.scatter(x[norm], y[norm], c=src['CC'][norm], edgecolors= "black")
 
-    plt.colorbar(label='MS dist')
+    if Mean == True:
+        mean(x, y)
+    if Median == True:
+        median(x, y)
+
+    plt.colorbar(label=label)
 
     plt.ylabel('log $M_{H2}$/$M_{*}$')      
     plt.xlabel('log $M_{HI}$/$M_{*}$')
@@ -331,9 +384,10 @@ def AGN_classes():
 
     print(JINGLE['AGNCLASS'][seven_odds()])
 
-def Catinella_5(src, seven = True):
+def Catinella_5(src, seven = True, Mean = True, Median = True):
     #src = dist(src)
-    src['CC'] = src['LOGMH2'] - src['LOGMH1']
+    #src['CC'] = src['LOGMH2'] - src['LOGMH1']
+    src['CC'] = src['LOGMDUST'] - src['LOGMSTAR_MAGPHYS']
 
     color_map = matplotlib.cm.get_cmap('rainbow')
     plt.set_cmap(color_map)
@@ -343,7 +397,10 @@ def Catinella_5(src, seven = True):
 
     plt.scatter(x, y, c=src['CC'], edgecolors= "black")
 
-    median(x, y)
+    if Mean == True:
+        mean(x, y)
+    if Median == True:
+        median(x, y)
 
     plt.colorbar(label='log Rmol')
     
@@ -360,7 +417,10 @@ def Catinella_5(src, seven = True):
 
     plt.scatter(x, y, c=src['CC'], edgecolors= "black")
 
-    median(x, y)
+    if Mean == True:
+        mean(x, y)
+    if Median == True:
+        median(x, y)
 
     plt.colorbar(label='log Rmol')
     

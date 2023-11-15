@@ -41,15 +41,12 @@ src6 = DM.XCG_main(src6)
 src7 = DM.HERACLES_main(src7)
 
 def main():
-    FF.print_full(src1)
-    #FF.print_full(src2)
-    #FF.print_full(src3)
-    #FF.print_full(src4)
-    #FF.print_full(src5)
-    #FF.print_full(src6)
-    #FF.print_full(src7)
+    df1 = src1[['JINGLEID','LOGMSTAR_MAGPHYS','LOGMSTAR_MAGPHYS_ERR','LOGSFR_MAGPHYS','LOGSFR_MAGPHYS_ERR','LOGMGAS','LOGMGAS_ERR','MGAS_FLAG','LOGMH1','H1_FLAG','LOGMH2']].copy()
 
-    #environments()
+    UL = df1.index[(df1['H1_FLAG']==0)].tolist()
+
+    return UL
+
 
 def comp_plots():
     df1 = src1[['LOGMSTAR_MAGPHYS','LOGMSTAR_MAGPHYS_ERR','LOGSFR_MAGPHYS','LOGSFR_MAGPHYS_ERR','LOGMH2_RYAN','LOGMH1_MATT','LOGMH1_MATT_ERR','H1_FLAG','LOGMH2_RYAN_ERR','LOGMGAS','LOGMGAS_ERR','MGAS_FLAG','JINGLEID']].copy()

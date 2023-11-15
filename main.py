@@ -16,6 +16,7 @@ import gather_data as GD
 import callable_functions as CF
 import constants as C
 import Final as F
+import CatinellaPlots as CP
 
 #data analysis and manipulation
 import core_analysis as CA
@@ -37,18 +38,37 @@ xcoldgass = CF.src6.copy()
 def main():
     print("Hello and welcome to the plotting software!")
     print("-------------------------------------------")
+    
+    #preamble
+    UL = CF.main()
+    jingle['H1_F'][UL] = 3
 
-    FF.print_full(jingle)
-    FF.print_full(xcoldgass)
+    #CP.Figure1(jingle)
+    #CP.Figure5(jingle)
+    #CP.Figure6(jingle, xcg=True)
+    #CP.Figure7(jingle, xcg=False)
+    #CP.Figure8(jingle, xcg=False)
+    #CP.Figure9(jingle, xcg=False)
+    #CP.Figure10(jingle, xcg=False)
+    CP.Figure11(jingle, xcg=False)
 
-    #F.sSFR_MS(jingle)
+
+    #FF.print_full(jingle)
+
+    #FF.print_full(jingle['LOGMH1']-jingle['LOGMSTAR_MAGPHYS'])
+    #print(len(jingle['LOGMH1']-jingle['LOGMSTAR_MAGPHYS']))
+    #FF.print_full(xcoldgass)
+
+    #F.sSFR_MS(jingle, xcg = True, seven = False, RMOL = False, DUST = True, Mean = True, Median = True)
     #F.Catinella_1(jingle)
-    #F.Catinella_2(jingle)
+    #F.Catinella_2(jingle, xcg = False, seven = False, RMOL=True, DUST=False, Mean=False, Median=False)
+
     #F.Catinella_3(jingle)
     #F.Catinella_4(jingle)
-    F.Catinella_5(jingle, seven=False)
+    #F.Catinella_5(jingle, seven=False)
 
     return
+    
 
 
 
