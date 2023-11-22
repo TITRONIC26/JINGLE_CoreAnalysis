@@ -50,8 +50,10 @@ def main():
     #CP.Figure8(jingle, xcg=False)
     #CP.Figure9(jingle, xcg=False)
     #CP.Figure10(jingle, xcg=False)
-    CP.Figure11(jingle, xcg=False)
-
+    #CP.Figure11(jingle, xcg=False)
+    #CP.New_Figure1(jingle, xcg=True)
+    #CP.New_Figure2(jingle, xcg=True)
+    CP.New_Figure3(jingle, showNon=True)
 
     #FF.print_full(jingle)
 
